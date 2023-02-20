@@ -1,0 +1,8 @@
+.FormBody {
+    display: flex;
+    flex-flow: column;
+}
+
+.FormBody label{
+    margin-top: 20px;
+}
