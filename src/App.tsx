@@ -10,7 +10,7 @@ export default function App() {
 
 const initLocal = localStorage.getItem("loggedUser") || '';
 const [loggedUser, setLoggedUser] = useState<LoginResponse>(initLocal.length > 0 ? JSON.parse( initLocal) : {jwt_token: ''});
-
+/*TODO authprovider + sprawdź ważność tokenu "time to leave"*/
 return (
     <div className="App">
         <Header/>
@@ -19,10 +19,12 @@ return (
                 <li>
                     <Link to={"/"}>HOME</Link>
                 </li>
-                {!!loggedUser?.jwt_token &&
-                    <li>
-                        <Link to={"/register"}>REGISTER TO AN EVENT</Link>
-                    </li>}
+                <li>
+                    <Link to={"/clients"}>CLIENTS</Link>
+                </li>
+                <li>
+                    <Link to={"/actions"}>ACTIONS</Link>
+                </li>
                 {!loggedUser?.jwt_token &&
                     <li>
                         <Link to={"/login"}>LOG IN</Link>

@@ -26,7 +26,7 @@ export const API_CITY_SIZE_URL = `${API_URL}/citySizes`;
 export const API_CITY_SIZE_ALL = `${API_CITY_SIZE_URL}/all`;
 export const API_CITY_SIZE_CREATE = `${API_CITY_SIZE_URL}/add`;
 export const API_CITY_SIZE_UPDATE = `${API_CITY_SIZE_URL}/update`;
-export const API_CITY_SIZE_DELETE = `${API_CITY_SZIE_URL}/delete`;
+export const API_CITY_SIZE_DELETE = `${API_CITY_SIZE_URL}/delete`;
 
 /*
 * COUNTRIES

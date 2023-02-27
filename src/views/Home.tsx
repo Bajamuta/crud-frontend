@@ -18,7 +18,7 @@ export default function Home() {
     return (
         <div className="HomeContainer">
             {!!objectContext.loggedUser?.jwt_token && <p>Logged as {objectContext.loggedUser.username}</p>}
-            <h2>Our events:</h2>
+           {/* <h2>Our events:</h2>*/}
             <div className="ListContainer">
                 <ul>
                     {/*{
