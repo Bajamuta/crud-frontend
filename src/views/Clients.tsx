@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ClientResponse, ObjectContext} from "../helpers/interfaces-responses";
+import {ClientResponse, ObjectContext} from "../../helpers/interfaces-responses";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios/index";

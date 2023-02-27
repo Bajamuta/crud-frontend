@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useOutletContext} from "react-router-dom";
 import "./LogOut.css";
-import {ObjectContext} from "../helpers/interfaces-responses";
+import {ObjectContext} from "../../helpers/interfaces-responses";
 
 export default function LogOut() {
 

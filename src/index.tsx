@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Home from '../views/Home';
+import Home from './views/Home';
 import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Login from "../views/Login";
-import SignUp from "../views/SignUp";
-import LogOut from "../views/LogOut";
-import User from "../views/User";
-import ErrorPage from "../views/ErrorPage";
+import Login from "./views/Login";
+import SignUp from "./views/SignUp";
+import LogOut from "./views/LogOut";
+import User from "./views/User";
+import ErrorPage from "./views/ErrorPage";
+import Clients from "./views/Clients";
+import Actions from "./views/Actions";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -30,6 +32,12 @@ const router = createBrowserRouter([
             },
             {
                 path: "logout", element: <LogOut/>
+            },
+            {
+                path: "clients", element: <Clients/>
+            },
+            {
+                path: "actions", element: <Actions/>
             },
             {
                 path: 'user', element: <User/>

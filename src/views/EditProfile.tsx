@@ -1,11 +1,12 @@
 import ApiService from "../services/ApiService";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {FormDataRegister, User, UserDetails, UserResponse} from "../helpers/interfaces";
 import {AxiosResponse} from "axios/index";
 import {useNavigate} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import React, {useEffect} from "react";
+import {FormDataRegister} from "../../helpers/interfaces-requests";
+import {UserResponse} from "../../helpers/interfaces-responses";
 
 interface EditProfileProps {
     userDetails: UserResponse;
@@ -51,7 +52,7 @@ export default function EditProfile(props: EditProfileProps) {
             <Form name="signupForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="my-3" controlId="username">
                     <Form.Label>Username*:</Form.Label>
-                    <Controller control={control} name="username" defaultValue={props.userDetails.username}
+                    <Controller control={control} name="username" defaultValue={props.userDetails?.username}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter username"
                                                   required
@@ -64,24 +65,24 @@ export default function EditProfile(props: EditProfileProps) {
                     </Form.Control.Feedback>
                     {errors.username && <Form.Text className="ValidationMessage">{errors.username?.message}</Form.Text>}
                 </Form.Group>
-                <Form.Group className="my-3" controlId="name">
+                <Form.Group className="my-3" controlId="firstname">
                     <Form.Label>Name*:</Form.Label>
-                    <Controller control={control} name="name" defaultValue={props.userDetails.name}
+                    <Controller control={control} name="firstname" defaultValue={props.userDetails?.firstname}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter name"
                                                   required
                                                   minLength={3}
-                                                  onChange={onChange} value={value} ref={ref} isInvalid={!!errors.name}>
+                                                  onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>
                                     </Form.Control>
                                 )} />
                     <Form.Control.Feedback type='invalid'>
-                        {errors.name?.message}
+                        {errors.firstname?.message}
                     </Form.Control.Feedback>
-                    {errors.name && <Form.Text className="ValidationMessage">{errors.name?.message}</Form.Text>}
+                    {errors.firstname && <Form.Text className="ValidationMessage">{errors.firstname?.message}</Form.Text>}
                 </Form.Group>
                 <Form.Group className="my-3" controlId="surname">
                     <Form.Label>Surname*:</Form.Label>
-                    <Controller control={control} name="surname" defaultValue={props.userDetails.surname}
+                    <Controller control={control} name="surname" defaultValue={props.userDetails?.surname}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter surname"
                                                   required
@@ -96,7 +97,7 @@ export default function EditProfile(props: EditProfileProps) {
                 </Form.Group>
                 <Form.Group className="my-3" controlId="email">
                     <Form.Label>Email*:</Form.Label>
-                    <Controller control={control} name="email" defaultValue={props.userDetails.email}
+                    <Controller control={control} name="email" defaultValue={props.userDetails?.email}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="email" placeholder="Enter email"
                                                   required

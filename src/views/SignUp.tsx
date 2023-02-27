@@ -1,11 +1,12 @@
 import React, {ChangeEvent} from "react";
-import {FormDataRegister, LoginResponse, ObjectContext, UserResponse} from "../helpers/interfaces";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {SubmitHandler, useForm, Controller} from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import {Button} from "react-bootstrap";
 import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios";
+import {ObjectContext, UserResponse} from "../../helpers/interfaces-responses";
+import { FormDataRegister } from "../../helpers/interfaces-requests";
 
 export default function SignUp() {
 
@@ -15,7 +16,7 @@ export default function SignUp() {
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<FormDataRegister>();
 
     const onSubmit: SubmitHandler<FormDataRegister> = (data: FormDataRegister) => {
-        apiService.registerUser(data)
+        apiService.createUser(data)
             .then((response: AxiosResponse<UserResponse>) => {
             if (response.status === 200) {
                 if (!response.data.error)
@@ -57,20 +58,20 @@ export default function SignUp() {
                 </Form.Control.Feedback>
                 {errors.username && <Form.Text className="ValidationMessage">{errors.username?.message}</Form.Text>}
             </Form.Group>
-            <Form.Group className="" controlId="name">
+            <Form.Group className="" controlId="firstname">
                 <Form.Label>Name*:</Form.Label>
-                <Controller control={control} name="name" defaultValue=""
+                <Controller control={control} name="firstname" defaultValue=""
                             render={({field: {onChange, onBlur, value, ref}}) => (
                                 <Form.Control type="text" placeholder="Enter name"
                                               required
                                               minLength={3}
-                                              onChange={onChange} value={value} ref={ref} isInvalid={!!errors.name}>
+                                              onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>
                                 </Form.Control>
                             )} />
                 <Form.Control.Feedback type='invalid'>
-                    {errors.name?.message}
+                    {errors.firstname?.message}
                 </Form.Control.Feedback>
-                {errors.name && <Form.Text className="ValidationMessage">{errors.name?.message}</Form.Text>}
+                {errors.firstname && <Form.Text className="ValidationMessage">{errors.firstname?.message}</Form.Text>}
             </Form.Group>
             <Form.Group className="" controlId="surname">
                 <Form.Label>Surname*:</Form.Label>

@@ -3,8 +3,8 @@ import axios, {AxiosResponse} from "axios";
 import './Home.css';
 import {useOutletContext} from "react-router-dom";
 import ApiService from "../services/ApiService";
-import {datePipe} from "../helpers/dateHelper";
-import {CityResponse, ObjectContext} from "../helpers/interfaces-responses";
+import {datePipe} from "../../helpers/dateHelper";
+import {CityResponse, ObjectContext} from "../../helpers/interfaces-responses";
 export default function Home() {
 
     const objectContext: ObjectContext = useOutletContext();

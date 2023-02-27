@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import './App.css';
 import {LoginResponse} from "../helpers/interfaces-responses";
-import Header from "../views/Header";
+import Header from "./views/Header";
 import {Link, Outlet} from "react-router-dom";
-import Footer from "../views/Footer";
+import Footer from "./views/Footer";
 
 export default function App() {
 

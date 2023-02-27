@@ -4,8 +4,8 @@ import axios, {AxiosResponse} from "axios";
 import {useNavigate, useOutletContext} from "react-router-dom";
 // @ts-ignore
 import {AUTH_TOKEN} from "../react-app-env.d";
-import {FormDataLogin} from "../helpers/interfaces";
-import {LoginResponse, ObjectContext} from "../helpers/interfaces-responses";
+import {FormDataLogin} from "../../helpers/interfaces";
+import {LoginResponse, ObjectContext} from "../../helpers/interfaces-responses";
 
 export default function Login() {
 

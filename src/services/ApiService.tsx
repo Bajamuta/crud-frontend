@@ -35,7 +35,7 @@ import {
     API_USER_DELETE,
     API_USER_UPDATE,
     API_USER_URL
-} from "../src/react-app-env.d";
+} from "../react-app-env.d";
 import {
     ActionRequest, ActionTypeRequest, AddressRequest,
     CityRequest,
@@ -43,14 +43,14 @@ import {
     ClientRequest,
     CountryRequest,
     UserRequest
-} from "../helpers/interfaces-requests";
+} from "../../helpers/interfaces-requests";
 import {
     ActionResponse, ActionTypeResponse, AddressResponse,
     CityResponse,
     CitySizeResponse, ClientBusinessResponse, ClientPersonResponse,
     ClientResponse,
     CountryResponse, UserResponse
-} from "../helpers/interfaces-responses";
+} from "../../helpers/interfaces-responses";
 
 export default class ApiService {
 
