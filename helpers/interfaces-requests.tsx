@@ -33,7 +33,10 @@ export interface CitySizeRequest extends CitySize{}
 
 export interface CountryRequest extends Country {}
 
-export interface ClientRequest extends Client {}
+export interface ClientRequest extends Client, Address, ClientPerson, ClientBusiness {
+    city: string;
+    country: string;
+}
 
 export interface ClientBusinessRequest extends ClientBusiness {}
 

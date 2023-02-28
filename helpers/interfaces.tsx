@@ -43,7 +43,7 @@ export interface Client {
 
 export interface ClientBusiness {
     nip: string,
-    name: string,
+    companyName: string,
 }
 
 export interface ClientPerson {
