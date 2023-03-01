@@ -27,6 +27,8 @@ export default function Actions() {
         getAllActions();
     }, []);
 
+    /*TODO akcje*/
+
     return (
         <div className="Container">
             <h3>Actions</h3>

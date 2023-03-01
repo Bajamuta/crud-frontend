@@ -27,6 +27,7 @@ export default function Clients() {
     const apiService: ApiService = new ApiService();
     const navigate = useNavigate();
     const [clients, setClients] = useState<ClientResponse[]>([]);
+    const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ClientRequest>();
 
     const getAllClients = () => {
@@ -57,6 +58,7 @@ export default function Clients() {
 
     function closeModal(data: ClientRequest | null) {
         setIsOpen(false);
+        setSelectedClient(null);
         if (data)
         {
             sendRequest(data);
@@ -94,9 +96,27 @@ export default function Clients() {
             .catch((error) => console.error("An error has occurred:", error));
     }
 
+    const selectClient = (id: string) => {
+        apiService.getSingleClient(id)
+            .then((response: AxiosResponse<ClientResponse>) => {
+                if (response.status === 200) {
+                    console.log('here', response, response.data);
+                    setSelectedClient(response.data);
+                    openModal();
+                }
+                else {
+                    console.log(response);
+                }
+            })
+            .catch((error) => console.error("An error has occurred:", error));
+    }
+
     useEffect(() => {
         getAllClients();
     }, []);
+
+    console.log('state', selectedClient);
+    /*TODO widok pojedynczego klienta + dopiero tam możliwość edycji; możliwość usuwania akcji z poziomu klienta*/
 
     return (
         <div className="Container">
@@ -107,6 +127,7 @@ export default function Clients() {
                         return (<li key={client._id}>
                             <span className="me-2">{client.firstname} {client.surname} {client.email}</span>
                             <Button type="button" variant="danger" onClick={() => deleteClient(client._id)}>Delete</Button>
+                            <Button type="button" variant="info" onClick={() => selectClient(client._id)}>Edit</Button>
                         </li>)
                     }
                 )}
@@ -121,22 +142,34 @@ export default function Clients() {
             >
                 <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
                 <Form name="newClientForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
-                    {/*<Form.Group className="my-3" controlId="business">
+                    <Form.Group className="my-3" controlId="business">
                         <Form.Label>Is company*:</Form.Label>
                         <Controller control={control} name="business" defaultValue={true}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
-                            <Form.Control type="switch" placeholder="Enter username"
+                                        <Form.Check
+                                            type="switch"
+                                            id="custom-switch"
+                                            label="Check this switch"
+                                            checked={selectedClient?.business}
+                                            onChange={onChange} ref={ref} isInvalid={!!errors.business}
+                                        />
+                            /*<Form.Control type="checkbox" placeholder="Enter username"
                                           required
                                           onChange={onChange} value={value} ref={ref} isInvalid={!!errors.business}>
-                            </Form.Control>
+                            </Form.Control>*/
                         )} />
-                    </Form.Group>*/}
+                    </Form.Group>
                     <Form.Group className="" controlId="firstname">
                         <Form.Label>First name*:</Form.Label>
-                        <Controller control={control} name="firstname" defaultValue=""
+                        {/*<Form.Control type="text" placeholder="Enter first name"
+                                      value={selectedClient?.firstname}
+                                      required isInvalid={!!errors.firstname}>
+                        </Form.Control>*/}
+                        <Controller control={control} name="firstname"
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter first name"
                                                       required
+                                                      defaultValue={selectedClient?.firstname}
                                                       onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>
                                         </Form.Control>
                                     )} />
