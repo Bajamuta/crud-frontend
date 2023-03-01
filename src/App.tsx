@@ -12,7 +12,7 @@ const initLocal = localStorage.getItem("loggedUser") || '';
 const [loggedUser, setLoggedUser] = useState<LoginResponse>(initLocal.length > 0 ? JSON.parse( initLocal) : {jwt_token: ''});
 /*TODO authprovider + sprawdź ważność tokenu "time to leave"*/
 return (
-    <div className="App">
+    <div className="App" id="appElement">
         <Header/>
         <nav className="AppNavbar">
             <ul>

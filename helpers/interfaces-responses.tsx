@@ -38,10 +38,12 @@ export interface ActionResponse extends DatabaseResponse, Action {
 
 export interface ActionTypeResponse extends DatabaseResponse, ActionType {}
 
-export interface ClientResponse extends DatabaseResponse, Client {
-    clientBusiness: ClientBusinessResponse,
-    clientPerson: ClientPersonResponse,
-    address: AddressResponse,
+export interface ClientResponse extends DatabaseResponse, Client, Address, ClientPerson, ClientBusiness {
+    /*clientBusiness: ClientBusinessResponse,
+    clientPerson: ClientPersonResponse,*/
+/*    address: AddressResponse,*/
+    city: string;
+    country: string;
     actions: ActionResponse[]
 }
 
