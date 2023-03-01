@@ -12,6 +12,7 @@ import User from "./views/User";
 import ErrorPage from "./views/ErrorPage";
 import Clients from "./views/Clients";
 import Actions from "./views/Actions";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
