@@ -34,7 +34,6 @@ export default function Clients() {
             (response: AxiosResponse<ClientResponse[]>) => {
                 if (response.status === 200)
                 {
-                    console.log('here', response, response.data);
                     setClients(response.data);
                 }
             }
@@ -65,6 +64,7 @@ export default function Clients() {
     }
 
     const sendRequest = (data: ClientRequest) => {
+        /*TODO business*/
         apiService.createClient({...data, business: false})
             .then((response: AxiosResponse<Response>) => {
                 if (response.status === 200) {
@@ -81,6 +81,19 @@ export default function Clients() {
         closeModal(data);
     }
 
+    const deleteClient = (id: string) => {
+        apiService.deleteClient(id)
+            .then((response: AxiosResponse<Response>) => {
+                if (response.status === 200) {
+                    getAllClients();
+                }
+                else {
+                    console.log(response);
+                }
+            })
+            .catch((error) => console.error("An error has occurred:", error));
+    }
+
     useEffect(() => {
         getAllClients();
     }, []);
@@ -93,7 +106,7 @@ export default function Clients() {
                     (client: ClientResponse) => {
                         return (<li key={client._id}>
                             <span className="me-2">{client.firstname} {client.surname} {client.email}</span>
-                            <Button type="button" variant="danger">Delete</Button>
+                            <Button type="button" variant="danger" onClick={() => deleteClient(client._id)}>Delete</Button>
                         </li>)
                     }
                 )}
@@ -118,7 +131,7 @@ export default function Clients() {
                             </Form.Control>
                         )} />
                     </Form.Group>*/}
-                    <Form.Group className="my-3" controlId="firstname">
+                    <Form.Group className="" controlId="firstname">
                         <Form.Label>First name*:</Form.Label>
                         <Controller control={control} name="firstname" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -132,7 +145,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.firstname && <Form.Text className="ValidationMessage">{errors.firstname?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="surname">
+                    <Form.Group className="" controlId="surname">
                         <Form.Label>Surname*:</Form.Label>
                         <Controller control={control} name="surname" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -146,7 +159,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.surname && <Form.Text className="ValidationMessage">{errors.surname?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="email">
+                    <Form.Group className="" controlId="email">
                         <Form.Label>Email*:</Form.Label>
                         <Controller control={control} name="email" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -160,7 +173,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.email && <Form.Text className="ValidationMessage">{errors.email?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="phone">
+                    <Form.Group className="" controlId="phone">
                         <Form.Label>Phone*:</Form.Label>
                         <Controller control={control} name="phone" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -174,7 +187,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.phone && <Form.Text className="ValidationMessage">{errors.phone?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="nip">
+                    <Form.Group className="" controlId="nip">
                         <Form.Label>NIP:</Form.Label>
                         <Controller control={control} name="nip" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -187,7 +200,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.nip && <Form.Text className="ValidationMessage">{errors.nip?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="companyName">
+                    <Form.Group className="" controlId="companyName">
                         <Form.Label>Company Name:</Form.Label>
                         <Controller control={control} name="companyName" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -200,7 +213,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.companyName && <Form.Text className="ValidationMessage">{errors.companyName?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="city">
+                    <Form.Group className="" controlId="city">
                         <Form.Label>City*:</Form.Label>
                         <Controller control={control} name="city" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -214,7 +227,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.city && <Form.Text className="ValidationMessage">{errors.city?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="country">
+                    <Form.Group className="" controlId="country">
                         <Form.Label>Country*:</Form.Label>
                         <Controller control={control} name="country" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -228,7 +241,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.country && <Form.Text className="ValidationMessage">{errors.country?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="postal">
+                    <Form.Group className="" controlId="postal">
                         <Form.Label>Postal*:</Form.Label>
                         <Controller control={control} name="postal" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -242,7 +255,7 @@ export default function Clients() {
                         </Form.Control.Feedback>
                         {errors.postal && <Form.Text className="ValidationMessage">{errors.postal?.message}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="my-3" controlId="streetWithNumbers">
+                    <Form.Group className="" controlId="streetWithNumbers">
                         <Form.Label>Street with numbers*:</Form.Label>
                         <Controller control={control} name="streetWithNumbers" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
