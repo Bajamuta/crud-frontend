@@ -26,7 +26,7 @@ export interface Country {
 }
 
 export interface Action {
-    name: string,
+    subject: string,
     date: string,
     description: string,
 }

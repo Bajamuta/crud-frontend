@@ -3,6 +3,8 @@
     flex-flow: column;
 }
 
-.FormBody label{
+.FormBody input[type="text"] label,
+.FormBody input[type="password"] label,
+.FormBody input[type="email"] label{
     margin-top: 20px;
 }

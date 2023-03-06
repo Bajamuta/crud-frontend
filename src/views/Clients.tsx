@@ -67,7 +67,7 @@ export default function Clients() {
 
     const sendRequest = (data: ClientRequest) => {
         /*TODO business*/
-        apiService.createClient({...data, business: false})
+        apiService.createClient({...data})
             .then((response: AxiosResponse<Response>) => {
                 if (response.status === 200) {
                     getAllClients();
@@ -112,6 +112,7 @@ export default function Clients() {
     }
 
     useEffect(() => {
+        Modal.setAppElement('body');
         getAllClients();
     }, []);
 
@@ -142,7 +143,7 @@ export default function Clients() {
             >
                 <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
                 <Form name="newClientForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Group className="my-3" controlId="business">
+                    <Form.Group className="" controlId="business">
                         <Form.Label>Is company*:</Form.Label>
                         <Controller control={control} name="business" defaultValue={true}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
@@ -150,24 +151,25 @@ export default function Clients() {
                                             type="switch"
                                             id="custom-switch"
                                             label="Check this switch"
-                                            checked={selectedClient?.business}
+                                            checked={value}
+
                                             onChange={onChange} ref={ref} isInvalid={!!errors.business}
                                         />
                             /*<Form.Control type="checkbox" placeholder="Enter username"
                                           required
-                                          onChange={onChange} value={value} ref={ref} isInvalid={!!errors.business}>
+                                          onChange={onChange}  ref={ref} isInvalid={!!errors.business}>
                             </Form.Control>*/
                         )} />
                     </Form.Group>
                     <Form.Group className="" controlId="firstname">
-                        <Form.Label>First name*:</Form.Label>
-                        {/*<Form.Control type="text" placeholder="Enter first name"
+                        <Form.Label>First subject*:</Form.Label>
+                        {/*<Form.Control type="text" placeholder="Enter first subject"
                                       value={selectedClient?.firstname}
                                       required isInvalid={!!errors.firstname}>
                         </Form.Control>*/}
                         <Controller control={control} name="firstname"
                                     render={({field: {onChange, onBlur, value, ref}}) => (
-                                        <Form.Control type="text" placeholder="Enter first name"
+                                        <Form.Control type="text" placeholder="Enter first subject"
                                                       required
                                                       defaultValue={selectedClient?.firstname}
                                                       onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>
@@ -237,7 +239,7 @@ export default function Clients() {
                         <Form.Label>Company Name:</Form.Label>
                         <Controller control={control} name="companyName" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
-                                        <Form.Control type="text" placeholder="Enter company name"
+                                        <Form.Control type="text" placeholder="Enter company subject"
                                                       onChange={onChange} value={value} ref={ref} isInvalid={!!errors.companyName}>
                                         </Form.Control>
                                     )} />

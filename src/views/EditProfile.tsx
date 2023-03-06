@@ -69,7 +69,7 @@ export default function EditProfile(props: EditProfileProps) {
                     <Form.Label>Name*:</Form.Label>
                     <Controller control={control} name="firstname" defaultValue={props.userDetails?.firstname}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
-                                    <Form.Control type="text" placeholder="Enter name"
+                                    <Form.Control type="text" placeholder="Enter subject"
                                                   required
                                                   minLength={3}
                                                   onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>

@@ -25,7 +25,7 @@ export default function Home() {
                         events?.map(
                             (event: EventResponse) => {
                                 return (<li key={event._id}>
-                                            {event.name} {event.description} {datePipe(event.date)}
+                                            {event.subject} {event.description} {datePipe(event.date)}
                                         </li>);
                             }
                         )
