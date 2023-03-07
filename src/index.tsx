@@ -13,6 +13,7 @@ import ErrorPage from "./views/ErrorPage";
 import Clients from "./views/Clients";
 import Actions from "./views/Actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Registered from "./views/Registered";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -42,6 +43,9 @@ const router = createBrowserRouter([
             },
             {
                 path: 'user', element: <User/>
+            },
+            {
+                path: 'registered', element: <Registered/>
             }
         ],
         errorElement: <ErrorPage/>

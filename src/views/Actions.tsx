@@ -170,21 +170,21 @@ export default function Actions() {
             >
                 <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
                 <Form name="newActionForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
-                    {/*<Form.Group className="" controlId="userId">
-                        <Form.Label>User*:</Form.Label>
-                        <Controller control={control} name="userId" defaultValue={objectContext.loggedUser.id}
+                    <Form.Group className="" controlId="token" hidden>
+                        <Form.Label>Token*:</Form.Label>
+                        <Controller control={control} name="token" defaultValue={objectContext.loggedUser.jwt_token}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
-                                        <Form.Control type="text" placeholder="Enter surname"
+                                        <Form.Control type="text" placeholder="Token"
                                                       required
                                                       disabled
-                                                      onChange={onChange} value={value} ref={ref} isInvalid={!!errors.userId}>
+                                                      onChange={onChange} value={value} ref={ref} isInvalid={!!errors.token}>
                                         </Form.Control>
                                     )} />
                         <Form.Control.Feedback type='invalid'>
-                            {errors.userId?.message}
+                            {errors.token?.message}
                         </Form.Control.Feedback>
-                        {errors.userId && <Form.Text className="ValidationMessage">{errors.userId?.message}</Form.Text>}
-                    </Form.Group>*/}
+                        {errors.token && <Form.Text className="ValidationMessage">{errors.token?.message}</Form.Text>}
+                    </Form.Group>
                     <Form.Group className="" controlId="typeId">
                         <Form.Label>Type of action*:</Form.Label>
                         {

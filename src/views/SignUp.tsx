@@ -110,7 +110,7 @@ export default function SignUp() {
                                 <Form.Control type="password" placeholder="Enter password"
                                               className={errors.password ? 'invalid' : 'valid'}
                                               required
-                                              pattern="[1-9a-Z$%&*()#@!]+"
+                                              pattern="'[0-9a-Z$%&*()#@!]+'"
                                               onChange={onChange}
                                               value={value} ref={ref}
                                               isInvalid={!!errors.password}>
@@ -127,7 +127,7 @@ export default function SignUp() {
                             render={({field: {onChange, onBlur, value, ref}}) => (
                                 <Form.Control type="password" placeholder="Confirm password"
                                               required
-                                              pattern="[1-9a-Z$%&*()#@!]+"
+                                              pattern="'[0-9a-Z$%&*()#@!]+'"
                                               onChange={onChange} value={value} ref={ref}
                                               isInvalid={!!errors.passwordConfirm || !passwordMatches()}
                                 >

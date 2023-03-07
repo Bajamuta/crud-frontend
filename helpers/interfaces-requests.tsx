@@ -14,7 +14,7 @@ import {
 export interface ActionRequest extends Action {
     typeId: string,
     clientId: string,
-    userToken: string
+    token: string
 }
 
 export interface ActionTypeRequest extends ActionType {}

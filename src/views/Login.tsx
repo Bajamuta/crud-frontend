@@ -6,11 +6,13 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 import {AUTH_TOKEN} from "../react-app-env.d";
 import {FormDataLogin} from "../../helpers/interfaces";
 import {LoginResponse, ObjectContext} from "../../helpers/interfaces-responses";
+import ApiService from "../services/ApiService";
 
 export default function Login() {
 
     const objectContext: ObjectContext = useOutletContext();
     const navigate = useNavigate();
+    const apiService: ApiService = new ApiService();
     const [errorMessage, setErrorMessage] = useState<string>("Incorrect username or password");
 
     const [formData, setFormData] = useState<FormDataLogin>({
@@ -21,11 +23,8 @@ export default function Login() {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        axios.post(`${AUTH_TOKEN}`, {
-            username: formData.username,
-            password: formData.password
-            /*TODO separate response type: loginresponse vs errorresponse*/
-        }).then((response: AxiosResponse<LoginResponse>) => {
+        apiService.login(formData)
+       .then((response: AxiosResponse<LoginResponse>) => {
             if (response.status === 200) {
                 if (!response.data.error)
                 {

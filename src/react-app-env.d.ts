@@ -4,7 +4,7 @@ export const API_URL = "http://localhost:8080/api";
 /*
 * USERS
 * */
-export const API_USER_URL = `${API_URL}/user`;
+export const API_USER_URL = `${API_URL}/users`;
 export const API_USER_ALL = `${API_USER_URL}/all`;
 export const API_USER_CREATE = `${API_USER_URL}/add`;
 export const API_USER_UPDATE = `${API_USER_URL}/update`;
