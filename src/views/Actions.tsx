@@ -32,6 +32,7 @@ export default function Actions() {
     const getAllActions = () => {
         apiService.getAllActions().then(
             (response: AxiosResponse<ActionResponse[]>) => {
+                console.log('get axtions', response, response.data);
                 if (response.status === 200)
                 {
                     setActions(response.data);
@@ -93,20 +94,13 @@ export default function Actions() {
     }
 
     const sendRequest = (data: ActionRequest) => {
-        /*TODO na backend wysłać token użytkownika zamiast ID + na backendzie rozczytać kto to jest*/
         apiService.createAction(data)
-            .then()
+            .then(
+                (response: AxiosResponse<Response>) => {
+                    getAllActions();
+                }
+            )
             .catch((error) => console.error("An error has occurred:", error));
-        /*apiService.createClient({...data})
-            .then((response: AxiosResponse<Response>) => {
-                if (response.status === 200) {
-                    getAllClients();
-                }
-                else {
-                    console.log(response);
-                }
-            })
-            .catch((error) => console.error("An error has occurred:", error));*/
     }
 
     useEffect(() => {
@@ -119,7 +113,7 @@ export default function Actions() {
     /*TODO akcje*/
 
     return (
-        <div className="Container">
+        <div className="TableContainer">
             <h3>Actions</h3>
             <table>
                 <thead>
@@ -143,9 +137,9 @@ export default function Actions() {
                                 <th scope="row">{action._id}</th>
                                 <td>{action.subject}</td>
                                 <td>{action.date}</td>
-                                <td>{action.type.name}</td>
+                                <td>{action.type?.name}</td>
                                 <td>{action.description}</td>
-                                <td>
+                                <td className="TableButtons">
                                     <Button type="button" variant="warning">Edit</Button>
                                     <Button type="button" variant="danger">Delete</Button>
                                 </td>
@@ -160,7 +154,7 @@ export default function Actions() {
                 </tr>
                 </tfoot>
             </table>
-            <Button type="button" variant="primary" onClick={openModal}>Add</Button>
+            <Button type="button" variant="primary" onClick={openModal} className="my-4">Add</Button>
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -258,8 +252,8 @@ export default function Actions() {
                         <Form.Label>Client*:</Form.Label>
                         <Controller control={control} name="clientId" defaultValue=""
                                     render={({field: {onChange, onBlur, value, ref}}) => (
-                                        <Form.Select aria-label="Default select example">
-                                            <option disabled>Open this select menu</option>
+                                        <Form.Select aria-label="Select client" onChange={onChange} value={value} ref={ref} isInvalid={!!errors.clientId}>
+                                            <option disabled value="">Open this select menu</option>
                                             {clients?.map(
                                                 (client: ClientResponse) => {
                                                     return (

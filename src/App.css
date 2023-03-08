@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.Container {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.TableContainer {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.TableButtons {
+  display: flex;
+  gap: 20px;
+}
