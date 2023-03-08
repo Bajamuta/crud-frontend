@@ -29,7 +29,7 @@ export default function User() {
     useEffect(() => {
         getUserDetails()
             .then((userDetails) => setUserDetails(userDetails));
-    });
+    }, []);
 
     const getUserDetails = (): Promise<UserResponse> => {
         return apiService.getSingleUser(objectContext.loggedUser.id)

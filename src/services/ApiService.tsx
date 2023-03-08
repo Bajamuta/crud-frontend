@@ -161,8 +161,10 @@ export default class ApiService {
     public deleteCountry(id: string){
         return axios.delete<Response>(`${API_COUNTRY_DELETE}/${id}`);
     }
-    public deleteAction(id: string){
-        return axios.delete<Response>(`${API_ACTION_DELETE}/${id}`);
+    public deleteAction(id: string, typeId: string, clientId: string){
+        /*TODO drugi parametr*/
+        const data = {};
+        return axios.delete<Response>(`${API_ACTION_DELETE}/${id}`, data);
     }
     public deleteActionType(id: string){
         return axios.delete<Response>(`${API_ACTION_TYPES_DELETE}/${id}`);

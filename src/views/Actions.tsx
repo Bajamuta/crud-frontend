@@ -103,6 +103,20 @@ export default function Actions() {
             .catch((error) => console.error("An error has occurred:", error));
     }
 
+    const deleteAction = (id: string, typeId: string, clientId: string) => {
+        apiService.deleteAction(id, typeId, clientId)
+            .then((response: AxiosResponse<Response>) => {
+                if (response.status === 200) {
+                    getAllActions();
+                }
+                else
+                {
+                    console.log(response);
+                }
+            })
+            .catch((error) => console.error("An error has occurred:", error));
+    }
+
     useEffect(() => {
         Modal.setAppElement('body');
         getAllActions();
@@ -110,7 +124,7 @@ export default function Actions() {
         getAllActionTypes();
     }, []);
 
-    /*TODO akcje*/
+    /*TODO dodawanie akcji z poziomu widoku klienta, nie tutaj*/
 
     return (
         <div className="TableContainer">
@@ -119,8 +133,8 @@ export default function Actions() {
                 <thead>
                 <tr>
                     <th scope="col">Lp.</th>
-                    <th scope="col">Date</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Type</th>
                     <th scope="col">Description</th>
                     <th scope="col"></th>
@@ -141,7 +155,7 @@ export default function Actions() {
                                 <td>{action.description}</td>
                                 <td className="TableButtons">
                                     <Button type="button" variant="warning">Edit</Button>
-                                    <Button type="button" variant="danger">Delete</Button>
+                                    <Button type="button" variant="danger" onClick={() => deleteAction(action._id, action.type?._id, action.client?._id)}>Delete</Button>
                                 </td>
                             </tr>
                         )}
@@ -154,7 +168,7 @@ export default function Actions() {
                 </tr>
                 </tfoot>
             </table>
-            <Button type="button" variant="primary" onClick={openModal} className="my-4">Add</Button>
+            {/*<Button type="button" variant="primary" onClick={openModal} className="my-4">Add</Button>
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -273,7 +287,7 @@ export default function Actions() {
                         <Button variant="primary" size="lg" type="submit">Save</Button>
                     </div>
                 </Form>
-            </Modal>
+            </Modal>*/}
         </div>
     );
 
