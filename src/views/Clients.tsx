@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ClientResponse, ObjectContext} from "../../helpers/interfaces-responses";
+import {ActionTypeResponse, ClientResponse, ObjectContext} from "../../helpers/interfaces-responses";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios";
@@ -13,6 +13,7 @@ export default function Clients() {
     const apiService: ApiService = new ApiService();
     const navigate = useNavigate();
     const [clients, setClients] = useState<ClientResponse[]>([]);
+    const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const [showClientDetails, setShowClientDetails] = useState<boolean>(false);
 
@@ -22,6 +23,17 @@ export default function Clients() {
                 if (response.status === 200)
                 {
                     setClients(response.data);
+                }
+            }
+        )
+            .catch((e) => console.error(e));
+    }
+    const getAllActionTypes = () => {
+        apiService.getAllActionTypes().then(
+            (response: AxiosResponse<ActionTypeResponse[]>) => {
+                if (response.status === 200)
+                {
+                    setActionTypes(response.data);
                 }
             }
         )
@@ -39,6 +51,9 @@ export default function Clients() {
             })
             .catch((error) => console.error("An error has occurred:", error));
     }
+    const deleteAction = (id: string) => {
+        return apiService.deleteAction(id);
+    }
     const openClientDetails = (id: string) => {
         apiService.getSingleClient(id)
             .then((response: AxiosResponse<ClientResponse>) => {
@@ -52,7 +67,22 @@ export default function Clients() {
             })
             .catch((error) => console.error("An error has occurred:", error));
     }
-    const refresh = () => {
+    const refreshDetails = () => {
+        if (selectedClient)
+        {
+            apiService.getSingleClient(selectedClient._id)
+                .then((response: AxiosResponse<ClientResponse>) => {
+                    if (response.status === 200) {
+                        setSelectedClient(response.data);
+                    }
+                    else {
+                        console.log(response);
+                    }
+                })
+                .catch((error) => console.error("An error has occurred:", error));
+        }
+    }
+    const refreshClientsList = () => {
         getAllClients();
     }
     const closeClientDetails = () => {
@@ -61,6 +91,7 @@ export default function Clients() {
     }
     useEffect(() => {
         getAllClients();
+        getAllActionTypes();
     }, []);
 
     /*TODO widok pojedynczego klienta + dopiero tam możliwość edycji; możliwość usuwania akcji z poziomu klienta*/
@@ -79,9 +110,14 @@ export default function Clients() {
                     }
                 )}
             </ul>
-            <AddClient refresh={refresh}/>
+            <AddClient refresh={refreshClientsList}/>
             <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
-                           closeModal={closeClientDetails} jwt_token={objectContext.loggedUser.jwt_token}/>
+                           actionTypes={actionTypes}
+                           createAction={apiService.createAction}
+                           closeModal={closeClientDetails}
+                           refresh={refreshDetails}
+                           deleteAction={deleteAction}
+                           jwt_token={objectContext.loggedUser.jwt_token}/>
         </div>
     );
 }

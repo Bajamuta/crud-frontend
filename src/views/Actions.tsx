@@ -102,8 +102,8 @@ export default function Actions() {
             .catch((error) => console.error("An error has occurred:", error));
     }
 
-    const deleteAction = (id: string, typeId: string, clientId: string) => {
-        apiService.deleteAction(id, typeId, clientId)
+    const deleteAction = (id: string) => {
+        apiService.deleteAction(id)
             .then((response: AxiosResponse<Response>) => {
                 if (response.status === 200) {
                     getAllActions();
@@ -154,7 +154,7 @@ export default function Actions() {
                                 <td>{action.description}</td>
                                 <td className="TableButtons">
                                     <Button type="button" variant="warning">Edit</Button>
-                                    <Button type="button" variant="danger" onClick={() => deleteAction(action._id, action.type?._id, action.client?._id)}>Delete</Button>
+                                    <Button type="button" variant="danger" onClick={() => deleteAction(action._id)}>Delete</Button>
                                 </td>
                             </tr>
                         )}

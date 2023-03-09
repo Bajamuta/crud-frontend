@@ -3,7 +3,6 @@ import {ActionResponse, ActionTypeResponse, ClientResponse} from "../../helpers/
 import Modal from "react-modal";
 import {Button, Form} from "react-bootstrap";
 import {AxiosResponse} from "axios";
-import ApiService from "../services/ApiService";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {ActionRequest} from "../../helpers/interfaces-requests";
 
@@ -11,7 +10,11 @@ interface ClientDetailsProps {
     selectedClient: ClientResponse | null,
     modalIsOpen: boolean,
     closeModal: () => void,
-    jwt_token: string
+    jwt_token: string,
+    actionTypes: ActionTypeResponse[] | undefined,
+    createAction: (data: ActionRequest) => Promise<any>,
+    refresh: () => void,
+    deleteAction: (id: string) => Promise<any>
 }
 
 const customStyles = {
@@ -28,9 +31,7 @@ const customStyles = {
 
 export default function ClientDetails(props: ClientDetailsProps) {
     let subtitle: HTMLHeadingElement | null;
-    const apiService: ApiService = new ApiService();
     const [showAddAction, setShowAddAction] = useState<boolean>(false);
-    const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ActionRequest>();
     function afterOpenModal() {
         // references are now sync'd and can be accessed.
@@ -38,29 +39,27 @@ export default function ClientDetails(props: ClientDetailsProps) {
             subtitle.style.color = '#f00';
         }
     }
-    const getAllActionTypes = () => {
-        apiService.getAllActionTypes().then(
-            (response: AxiosResponse<ActionTypeResponse[]>) => {
-                if (response.status === 200)
-                {
-                    setActionTypes(response.data);
-                }
-            }
-        )
-            .catch((e) => console.error(e));
-    }
     const onSubmit: SubmitHandler<ActionRequest> = (data: ActionRequest) => {
-        apiService.createAction(data)
+        props.createAction(data)
             .then(
                 (response: AxiosResponse<Response>) => {
                     setShowAddAction(false);
+                    props.refresh();
+                }
+            )
+            .catch((error) => console.error("An error has occurred:", error));
+    }
+    const deleteAction = (id: string) => {
+        return props.deleteAction(id)
+            .then(
+                (response: AxiosResponse<Response>) => {
+                    props.refresh();
                 }
             )
             .catch((error) => console.error("An error has occurred:", error));
     }
     useEffect(() => {
         Modal.setAppElement('body');
-        getAllActionTypes();
     }, []);
     return (
         <div>
@@ -75,6 +74,7 @@ export default function ClientDetails(props: ClientDetailsProps) {
                     Client: {props.selectedClient?.firstname} {props.selectedClient?.surname}
                 </h2>
                 <div className="my-4">
+                    <Button variant="info" type="button" size="lg" className="w-50">Edit details</Button>
                     <p><span className="fw-bold">Is company:</span> {props.selectedClient?.business}</p>
                     <p><span className="fw-bold">Email:</span> {props.selectedClient?.email}</p>
                     <p><span className="fw-bold">Phone:</span> {props.selectedClient?.phone}</p>
@@ -88,7 +88,7 @@ export default function ClientDetails(props: ClientDetailsProps) {
                                             {action.type?.name} at {action.date} <br/>
                                             <span className="fw-bold">Subject:</span>{action.subject} <br/>
                                             <span className="fw-bold">Description:</span>{action.description} <br/>
-                                            <Button type="button" variant="danger">Delete</Button>
+                                            <Button type="button" variant="danger" onClick={() => deleteAction(action._id)}>Delete</Button>
                                         </li>
                                     );
                                 }
@@ -133,7 +133,7 @@ export default function ClientDetails(props: ClientDetailsProps) {
                             <Form.Group className="" controlId="typeId">
                                 <Form.Label>Type of action*:</Form.Label>
                                 {
-                                    actionTypes?.map(
+                                    props.actionTypes?.map(
                                         (actionType: ActionTypeResponse) => {
                                             return (
                                                 <Controller control={control} name="typeId" key={actionType._id}
@@ -206,7 +206,6 @@ export default function ClientDetails(props: ClientDetailsProps) {
                     </div>}
                 </div>
                 <div className="d-flex justify-content-between">
-                    <Button variant="info" type="button" size="lg" className="w-50">Edit</Button>
                     <Button variant="primary" type="button" size="lg" className="w-50" onClick={props.closeModal}>Close</Button>
                 </div>
             </Modal>
