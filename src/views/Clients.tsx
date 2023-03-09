@@ -80,7 +80,8 @@ export default function Clients() {
                 )}
             </ul>
             <AddClient refresh={refresh}/>
-            <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails} closeModal={closeClientDetails}/>
+            <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
+                           closeModal={closeClientDetails} jwt_token={objectContext.loggedUser.jwt_token}/>
         </div>
     );
 }

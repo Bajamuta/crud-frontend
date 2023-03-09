@@ -32,7 +32,6 @@ export default function Actions() {
     const getAllActions = () => {
         apiService.getAllActions().then(
             (response: AxiosResponse<ActionResponse[]>) => {
-                console.log('get axtions', response, response.data);
                 if (response.status === 200)
                 {
                     setActions(response.data);
