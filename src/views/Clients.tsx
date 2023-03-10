@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {ActionTypeResponse, ClientResponse, ObjectContext} from "../../helpers/interfaces-responses";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import {useOutletContext} from "react-router-dom";
 import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios";
-import {Button, Form} from "react-bootstrap";
-import Modal from 'react-modal';
+import {Button} from "react-bootstrap";
 import AddClient from "./AddClient";
 import ClientDetails from "./ClientDetails";
 import {ClientRequest} from "../../helpers/interfaces-requests";
@@ -13,7 +12,6 @@ import EditClient from "./EditClient";
 export default function Clients() {
     const objectContext: ObjectContext = useOutletContext();
     const apiService: ApiService = new ApiService();
-    const navigate = useNavigate();
     const [clients, setClients] = useState<ClientResponse[]>([]);
     const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
@@ -122,8 +120,6 @@ export default function Clients() {
         getAllClients();
         getAllActionTypes();
     }, []);
-
-    /*TODO widok pojedynczego klienta + dopiero tam możliwość edycji; możliwość usuwania akcji z poziomu klienta*/
 
     return (
         <div className="Container">
