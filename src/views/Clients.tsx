@@ -120,20 +120,55 @@ export default function Clients() {
         getAllClients();
         getAllActionTypes();
     }, []);
+    /*TODO missing dependencies*/
 
     return (
         <div className="Container">
             <h3>Clients</h3>
-            <ul>
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Lp.</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Is company</th>
+                    <th scope="col"></th>
+                </tr>
+
+                </thead>
+                <tbody>
+                {/*TODO tylko klieci usera?*/}
                 {clients?.map(
                     (client: ClientResponse) => {
-                        return (<li key={client._id}>
-                            <span className="me-2">{client.firstname} {client.surname} {client.email}</span>
-                            <Button type="button" variant="danger" onClick={() => deleteClient(client._id)}>Delete</Button>
-                            <Button type="button" variant="info" className="ms-3" onClick={() => openClientDetails(client._id)}>Details</Button>
-                        </li>)
+                        return (
+                        <tr key={client._id}>
+                            <th scope="row">{client._id}</th>
+                            <td>{client.firstname}</td>
+                            <td>{client.surname}</td>
+                            <td>{client.phone}</td>
+                            <td>
+                                {client.business && 'YES'}
+                                {!client.business && 'NO'}
+                            </td>
+                            <td className="TableButtons">
+                                <Button type="button" variant="danger" onClick={() => deleteClient(client._id)}>Delete</Button>
+                                <Button type="button" variant="info" className="ms-3" onClick={() => openClientDetails(client._id)}>Details</Button>
+                            </td>
+                        </tr>
+                        )
                     }
                 )}
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colSpan={6}>Total: {clients?.length} client(s)</td>
+                </tr>
+                </tfoot>
+            </table>
+            <ul>
+
             </ul>
             <AddClient refresh={refreshClientsList} createClient={createClient}/>
             <EditClient selectedClient={selectedClient} editClient={editClient}
