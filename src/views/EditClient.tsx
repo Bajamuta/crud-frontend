@@ -5,6 +5,8 @@ import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {ClientRequest} from "../../helpers/interfaces-requests";
 import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios";
+import {ClientResponse} from "../../helpers/interfaces-responses";
+
 const customStyles = {
     content: {
         top: '50%',
@@ -17,45 +19,26 @@ const customStyles = {
     },
 };
 
-interface AddClientProps {
-    refresh: () => void,
-    createClient: (data: ClientRequest) => Promise<any>
+interface EditClientProps {
+    selectedClient: ClientResponse | null,
+    editClient: (data: ClientRequest) => void,
+    modalIsOpen: boolean,
+    closeModal: () => void,
 }
 
-export default function AddClient(props: AddClientProps) {
+export default function EditClient(props: EditClientProps) {
+
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ClientRequest>();
+    const apiService: ApiService = new ApiService();
     let subtitle: HTMLHeadingElement | null;
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-    const sendRequest = (data: ClientRequest) => {
-        props.createClient({...data})
-            .then((response: AxiosResponse<Response>) => {
-                if (response.status === 200) {
-                    props.refresh();
-                }
-                else {
-                    console.log(response);
-                }
-            })
-            .catch((error) => console.error("An error has occurred:", error));
-    }
-    function openModal() {
-        setIsOpen(true);
-    }
     function afterOpenModal() {
         // references are now sync'd and can be accessed.
         if (subtitle) {
             subtitle.style.color = '#f00';
         }
     }
-    function closeModal(data: ClientRequest | null) {
-        setIsOpen(false);
-        if (data)
-        {
-            sendRequest(data);
-        }
-    }
     const onSubmit: SubmitHandler<ClientRequest> = (data: ClientRequest) => {
-        closeModal(data);
+        props.editClient(data);
     }
 
     useEffect(() => {
@@ -64,11 +47,10 @@ export default function AddClient(props: AddClientProps) {
 
     return (
         <div>
-            <Button type="button" variant="primary" onClick={openModal}>Add</Button>
             <Modal
-                isOpen={modalIsOpen}
+                isOpen={props.modalIsOpen}
                 onAfterOpen={afterOpenModal}
-                onRequestClose={() => closeModal(null)}
+                onRequestClose={() => props.closeModal()}
                 style={customStyles}
                 contentLabel="Example Modal"
             >
@@ -76,7 +58,7 @@ export default function AddClient(props: AddClientProps) {
                 <Form name="newClientForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group className="" controlId="business">
                         <Form.Label>Is company*:</Form.Label>
-                        <Controller control={control} name="business" defaultValue={true}
+                        <Controller control={control} name="business" defaultValue={props.selectedClient?.business}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Check
                                             type="switch"
@@ -89,7 +71,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     <Form.Group className="" controlId="firstname">
                         <Form.Label>First name*:</Form.Label>
-                        <Controller control={control} name="firstname"
+                        <Controller control={control} name="firstname" defaultValue={props.selectedClient?.firstname}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter first name"
                                                       required
@@ -104,7 +86,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     <Form.Group className="" controlId="surname">
                         <Form.Label>Surname*:</Form.Label>
-                        <Controller control={control} name="surname" defaultValue=""
+                        <Controller control={control} name="surname" defaultValue={props.selectedClient?.surname}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter surname"
                                                       required
@@ -118,7 +100,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     <Form.Group className="" controlId="email">
                         <Form.Label>Email*:</Form.Label>
-                        <Controller control={control} name="email" defaultValue=""
+                        <Controller control={control} name="email" defaultValue={props.selectedClient?.email}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="email" placeholder="Enter email"
                                                       required
@@ -132,7 +114,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     <Form.Group className="" controlId="phone">
                         <Form.Label>Phone*:</Form.Label>
-                        <Controller control={control} name="phone" defaultValue=""
+                        <Controller control={control} name="phone" defaultValue={props.selectedClient?.phone}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter phone"
                                                       required
@@ -146,7 +128,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     {watch().business && <Form.Group className="" controlId="nip">
                         <Form.Label>NIP*:</Form.Label>
-                        <Controller control={control} name="nip" defaultValue=""
+                        <Controller control={control} name="nip" defaultValue={props.selectedClient?.nip}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter NIP"
                                                       required
@@ -161,7 +143,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>}
                     {watch().business && <Form.Group className="" controlId="companyName">
                         <Form.Label>Company Name*:</Form.Label>
-                        <Controller control={control} name="companyName" defaultValue=""
+                        <Controller control={control} name="companyName" defaultValue={props.selectedClient?.companyName}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter company subject"
                                                       required
@@ -177,7 +159,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>}
                     <Form.Group className="" controlId="city">
                         <Form.Label>City*:</Form.Label>
-                        <Controller control={control} name="city" defaultValue=""
+                        <Controller control={control} name="city" defaultValue={props.selectedClient?.city}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter city"
                                                       required
@@ -191,7 +173,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     <Form.Group className="" controlId="country">
                         <Form.Label>Country*:</Form.Label>
-                        <Controller control={control} name="country" defaultValue=""
+                        <Controller control={control} name="country" defaultValue={props.selectedClient?.country}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter country"
                                                       required
@@ -205,7 +187,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     <Form.Group className="" controlId="postal">
                         <Form.Label>Postal*:</Form.Label>
-                        <Controller control={control} name="postal" defaultValue=""
+                        <Controller control={control} name="postal" defaultValue={props.selectedClient?.postal}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter postal"
                                                       required
@@ -219,7 +201,7 @@ export default function AddClient(props: AddClientProps) {
                     </Form.Group>
                     <Form.Group className="" controlId="streetWithNumbers">
                         <Form.Label>Street with numbers*:</Form.Label>
-                        <Controller control={control} name="streetWithNumbers" defaultValue=""
+                        <Controller control={control} name="streetWithNumbers" defaultValue={props.selectedClient?.streetWithNumbers}
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter street with numbers"
                                                       required
@@ -232,7 +214,7 @@ export default function AddClient(props: AddClientProps) {
                         {errors.streetWithNumbers && <Form.Text className="ValidationMessage">{errors.streetWithNumbers?.message}</Form.Text>}
                     </Form.Group>
                     <div className="ButtonsContainer">
-                        <Button variant="outline-danger" size="lg" type="reset" onClick={() => closeModal(null)}>Cancel</Button>
+                        <Button variant="outline-danger" size="lg" type="reset" onClick={() => props.closeModal()}>Cancel</Button>
                         <Button variant="primary" size="lg" type="submit">Save</Button>
                     </div>
                 </Form>

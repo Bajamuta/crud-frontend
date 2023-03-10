@@ -14,7 +14,8 @@ interface ClientDetailsProps {
     actionTypes: ActionTypeResponse[] | undefined,
     createAction: (data: ActionRequest) => Promise<any>,
     refresh: () => void,
-    deleteAction: (id: string) => Promise<any>
+    deleteAction: (id: string) => Promise<any>,
+    openEditClient: () => void
 }
 
 const customStyles = {
@@ -74,10 +75,13 @@ export default function ClientDetails(props: ClientDetailsProps) {
                     Client: {props.selectedClient?.firstname} {props.selectedClient?.surname}
                 </h2>
                 <div className="my-4">
-                    <Button variant="info" type="button" size="lg" className="w-50">Edit details</Button>
-                    <p><span className="fw-bold">Is company:</span> {props.selectedClient?.business}</p>
-                    <p><span className="fw-bold">Email:</span> {props.selectedClient?.email}</p>
-                    <p><span className="fw-bold">Phone:</span> {props.selectedClient?.phone}</p>
+                    <Button variant="info" type="button" size="lg" className="w-50" onClick={props.openEditClient}>Edit details</Button>
+                    <p><span className="fw-bold">Is company: </span>
+                        {props.selectedClient?.business && 'YES'}
+                        {!props.selectedClient?.business && 'NO'}
+                    </p>
+                    <p><span className="fw-bold">Email: </span> {props.selectedClient?.email}</p>
+                    <p><span className="fw-bold">Phone: </span> {props.selectedClient?.phone}</p>
                     <h3>Actions ({props.selectedClient?.actions?.length}):</h3>
                     <ul>
                         {

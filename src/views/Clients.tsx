@@ -7,6 +7,8 @@ import {Button, Form} from "react-bootstrap";
 import Modal from 'react-modal';
 import AddClient from "./AddClient";
 import ClientDetails from "./ClientDetails";
+import {ClientRequest} from "../../helpers/interfaces-requests";
+import EditClient from "./EditClient";
 
 export default function Clients() {
     const objectContext: ObjectContext = useOutletContext();
@@ -16,6 +18,7 @@ export default function Clients() {
     const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const [showClientDetails, setShowClientDetails] = useState<boolean>(false);
+    const [showClientEdit, setShowClientEdit] = useState<boolean>(false);
 
     const getAllClients = () => {
         apiService.getAllClients().then(
@@ -51,6 +54,24 @@ export default function Clients() {
             })
             .catch((error) => console.error("An error has occurred:", error));
     }
+    const createClient = (data: ClientRequest) => {
+        return apiService.createClient({...data});
+    }
+    const editClient = (data: ClientRequest) => {
+        if(selectedClient)
+        {
+            apiService.updateClient(selectedClient?._id, data)
+                .then(
+                    (response: AxiosResponse<ClientResponse>) => {
+                        setShowClientEdit(false);
+                        setSelectedClient(null);
+                        getAllClients();
+                    }
+                )
+                .catch((error) => console.error("An error has occurred:", error));
+        }
+    }
+
     const deleteAction = (id: string) => {
         return apiService.deleteAction(id);
     }
@@ -66,6 +87,10 @@ export default function Clients() {
                 }
             })
             .catch((error) => console.error("An error has occurred:", error));
+    }
+    const openEditClient = () => {
+        setShowClientDetails(false);
+        setShowClientEdit(true);
     }
     const refreshDetails = () => {
         if (selectedClient)
@@ -89,6 +114,10 @@ export default function Clients() {
         setShowClientDetails(false);
         setSelectedClient(null);
     }
+    const closeClientEdit = () => {
+        setShowClientEdit(false);
+        setSelectedClient(null);
+    }
     useEffect(() => {
         getAllClients();
         getAllActionTypes();
@@ -110,13 +139,16 @@ export default function Clients() {
                     }
                 )}
             </ul>
-            <AddClient refresh={refreshClientsList}/>
+            <AddClient refresh={refreshClientsList} createClient={createClient}/>
+            <EditClient selectedClient={selectedClient} editClient={editClient}
+                modalIsOpen={showClientEdit} closeModal={closeClientEdit}/>
             <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
                            actionTypes={actionTypes}
                            createAction={apiService.createAction}
                            closeModal={closeClientDetails}
                            refresh={refreshDetails}
                            deleteAction={deleteAction}
+                           openEditClient={openEditClient}
                            jwt_token={objectContext.loggedUser.jwt_token}/>
         </div>
     );
