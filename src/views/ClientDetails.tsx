@@ -62,6 +62,7 @@ export default function ClientDetails(props: ClientDetailsProps) {
     useEffect(() => {
         Modal.setAppElement('body');
     }, []);
+    /*TODO szczegóły klienta jako komponent a nie modal*/
     return (
         <div>
             <Modal

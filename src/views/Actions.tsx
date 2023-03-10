@@ -122,9 +122,6 @@ export default function Actions() {
         getAllClients();
         getAllActionTypes();
     }, []);
-
-    /*TODO dodawanie akcji z poziomu widoku klienta, nie tutaj*/
-
     return (
         <div className="TableContainer">
             <h3>Actions</h3>

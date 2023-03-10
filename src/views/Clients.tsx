@@ -111,6 +111,7 @@ export default function Clients() {
     const closeClientDetails = () => {
         setShowClientDetails(false);
         setSelectedClient(null);
+        getAllClients();
     }
     const closeClientEdit = () => {
         setShowClientEdit(false);
@@ -138,7 +139,7 @@ export default function Clients() {
 
                 </thead>
                 <tbody>
-                {/*TODO tylko klieci usera?*/}
+                {/*TODO tylko klienci usera - przekazac token usera*/}
                 {clients?.map(
                     (client: ClientResponse) => {
                         return (
