@@ -62,7 +62,7 @@ export default function SignUp() {
                 <Form.Label>Name*:</Form.Label>
                 <Controller control={control} name="firstname" defaultValue=""
                             render={({field: {onChange, onBlur, value, ref}}) => (
-                                <Form.Control type="text" placeholder="Enter subject"
+                                <Form.Control type="text" placeholder="Enter firstname"
                                               required
                                               minLength={3}
                                               onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>

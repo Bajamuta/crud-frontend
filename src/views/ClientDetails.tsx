@@ -65,45 +65,38 @@ export default function ClientDetails(props: ClientDetailsProps) {
     /*TODO szczegóły klienta jako komponent a nie modal*/
     return (
         <div>
-            <Modal
-                isOpen={props.modalIsOpen}
-                onAfterOpen={afterOpenModal}
-                onRequestClose={() => props.closeModal()}
-                style={customStyles}
-                contentLabel="Example Modal"
-            >
-                <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
-                    Client: {props.selectedClient?.firstname} {props.selectedClient?.surname}
-                </h2>
-                <div className="my-4">
-                    <Button variant="info" type="button" size="lg" className="w-50" onClick={props.openEditClient}>Edit details</Button>
-                    <p><span className="fw-bold">Is company: </span>
-                        {props.selectedClient?.business && 'YES'}
-                        {!props.selectedClient?.business && 'NO'}
-                    </p>
-                    <p><span className="fw-bold">Email: </span> {props.selectedClient?.email}</p>
-                    <p><span className="fw-bold">Phone: </span> {props.selectedClient?.phone}</p>
-                    <h3>Actions ({props.selectedClient?.actions?.length}):</h3>
-                    <ul>
-                        {
-                            props.selectedClient?.actions?.map(
-                                (action: ActionResponse) => {
-                                    return (
-                                        <li key={action._id}>
-                                            {action.type?.name} at {action.date} <br/>
-                                            <span className="fw-bold">Subject:</span>{action.subject} <br/>
-                                            <span className="fw-bold">Description:</span>{action.description} <br/>
-                                            <Button type="button" variant="danger" onClick={() => deleteAction(action._id)}>Delete</Button>
-                                        </li>
-                                    );
-                                }
-                            )
-                        }
-                    </ul>
-                    {!showAddAction && <Button type="button" variant="info" onClick={() => setShowAddAction(true)} className="my-3">Add action</Button>}
-                    {showAddAction &&
-                        <div className="p-4 border-3 border shadow">
-                            <h5>New action for {props.selectedClient?.firstname} {props.selectedClient?.surname}</h5>
+            <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+                Client: {props.selectedClient?.firstname} {props.selectedClient?.surname}
+            </h2>
+            <div className="my-4">
+                <Button variant="info" type="button" size="lg" className="w-50" onClick={props.openEditClient}>Edit details</Button>
+                <p><span className="fw-bold">Is company: </span>
+                    {props.selectedClient?.business && 'YES'}
+                    {!props.selectedClient?.business && 'NO'}
+                </p>
+                <p><span className="fw-bold">Email: </span> {props.selectedClient?.email}</p>
+                <p><span className="fw-bold">Phone: </span> {props.selectedClient?.phone}</p>
+                <h3>Actions ({props.selectedClient?.actions?.length}):</h3>
+                <ul>
+                    {
+                        props.selectedClient?.actions?.map(
+                            (action: ActionResponse) => {
+                                return (
+                                    <li key={action._id}>
+                                        {action.type?.name} at {action.date} <br/>
+                                        <span className="fw-bold">Subject:</span>{action.subject} <br/>
+                                        <span className="fw-bold">Description:</span>{action.description} <br/>
+                                        <Button type="button" variant="danger" onClick={() => deleteAction(action._id)}>Delete</Button>
+                                    </li>
+                                );
+                            }
+                        )
+                    }
+                </ul>
+                {!showAddAction && <Button type="button" variant="info" onClick={() => setShowAddAction(true)} className="my-3">Add action</Button>}
+                {showAddAction &&
+                    <div className="p-4 border-3 border shadow">
+                        <h5>New action for {props.selectedClient?.firstname} {props.selectedClient?.surname}</h5>
                         <Form name="newActionForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                             <Form.Group className="" controlId="token" hidden>
                                 <Form.Label>Token*:</Form.Label>
@@ -209,11 +202,7 @@ export default function ClientDetails(props: ClientDetailsProps) {
                             </div>
                         </Form>
                     </div>}
-                </div>
-                <div className="d-flex justify-content-between">
-                    <Button variant="primary" type="button" size="lg" className="w-50" onClick={props.closeModal}>Close</Button>
-                </div>
-            </Modal>
+            </div>
         </div>
     );
 }

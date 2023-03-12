@@ -30,7 +30,7 @@ export default function Actions() {
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ActionRequest>();
 
     const getAllActions = () => {
-        apiService.getAllActions().then(
+        apiService.getActionsUser(objectContext.loggedUser.id).then(
             (response: AxiosResponse<ActionResponse[]>) => {
                 if (response.status === 200)
                 {

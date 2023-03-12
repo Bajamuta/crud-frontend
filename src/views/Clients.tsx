@@ -174,14 +174,14 @@ export default function Clients() {
             <AddClient refresh={refreshClientsList} createClient={createClient}/>
             <EditClient selectedClient={selectedClient} editClient={editClient}
                 modalIsOpen={showClientEdit} closeModal={closeClientEdit}/>
-            <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
-                           actionTypes={actionTypes}
-                           createAction={apiService.createAction}
-                           closeModal={closeClientDetails}
-                           refresh={refreshDetails}
-                           deleteAction={deleteAction}
-                           openEditClient={openEditClient}
-                           jwt_token={objectContext.loggedUser.jwt_token}/>
+            {showClientDetails && <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
+                            actionTypes={actionTypes}
+                            createAction={apiService.createAction}
+                            closeModal={closeClientDetails}
+                            refresh={refreshDetails}
+                            deleteAction={deleteAction}
+                            openEditClient={openEditClient}
+                            jwt_token={objectContext.loggedUser.jwt_token}/>}
         </div>
     );
 }

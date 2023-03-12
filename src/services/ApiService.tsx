@@ -70,6 +70,9 @@ export default class ApiService {
     public getAllActions(){
         return axios.get<ActionResponse[]>(`${API_ACTION_ALL}`);
     }
+    public getActionsUser(id: string){
+        return axios.get<ActionResponse[]>(`${API_ACTION_URL}/user/${id}`);
+    }
     public getAllActionTypes(){
         return axios.get<ActionTypeResponse[]>(`${API_ACTION_TYPES_ALL}`);
     }
