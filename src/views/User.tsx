@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useOutletContext} from "react-router-dom";
-import ApiService from "../services/ApiService";
 import axios, {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
 import EditProfile from "./EditProfile";
-import {ObjectContext, UserResponse} from "../../helpers/interfaces-responses";
+import {UserResponse} from "../../helpers/interfaces-responses";
+import {useMainContext} from "../App";
 
 export default function User() {
     const initUser = {
@@ -17,14 +17,12 @@ export default function User() {
         avatarUrl: '',
         actions: []
     };
-    const objectContext: ObjectContext = useOutletContext();
+    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
     const defaultAvatarUrl = 'https://images.unsplash.com/photo-1622227056993-6e7f88420855?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80';
-    const apiService: ApiService = new ApiService();
     const [userDetails, setUserDetails] = useState<UserResponse>(initUser);
     const [showEdit, setShowEdit] = useState<boolean>(false);
     const navigate = useNavigate();
     /*TODO initial user details?*/
-    axios.defaults.headers.common['Authorization'] = "Bearer " + (objectContext.loggedUser.jwt_token || '');
 
     useEffect(() => {
         getUserDetails()
@@ -32,7 +30,7 @@ export default function User() {
     }, []);
 
     const getUserDetails = (): Promise<UserResponse> => {
-        return apiService.getSingleUser(objectContext.loggedUser.id)
+        return apiService.getSingleUser(loggedUser.id)
             .then(
                 (response: AxiosResponse<UserResponse>) => {
                     if (!response.data.error) {
@@ -46,7 +44,7 @@ export default function User() {
     }
 
     const deleteUser = () => {
-        return apiService.deleteUser(objectContext.loggedUser.id).then(
+        return apiService.deleteUser(loggedUser.id).then(
             (result: AxiosResponse<Response>) => {
                 if (result.status === 200 || result.status === 204)
                 {

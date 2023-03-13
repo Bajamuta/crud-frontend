@@ -1,15 +1,52 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
-import {LoginResponse} from "../helpers/interfaces-responses";
+import {ActionTypeResponse, ClientResponse, LoginResponse} from "../helpers/interfaces-responses";
 import Header from "./views/Header";
-import {Link, Outlet} from "react-router-dom";
+import {Link, Outlet, useOutletContext} from "react-router-dom";
 import Footer from "./views/Footer";
+import ApiService from "./services/ApiService";
+import axios, {AxiosResponse} from "axios";
+import AuthService from "./services/AuthService";
+
+type ContextType = {
+    loggedUser: LoginResponse,
+    setLoggedUser: (data: LoginResponse) => void,
+    actionTypes: ActionTypeResponse[],
+    apiService: ApiService,
+    authService: AuthService
+}
+
+export function useMainContext() {
+    return useOutletContext<ContextType>();
+}
 
 export default function App() {
+    const initLocal = localStorage.getItem("loggedUser") || '';
+    const apiService = new ApiService();
+    const authService = new AuthService();
+    const [loggedUser, setLoggedUser] = useState<LoginResponse>(initLocal.length > 0 ? JSON.parse( initLocal) : {jwt_token: ''});
+    const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
+    const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
 
+    axios.defaults.headers.common['Authorization'] = "Bearer " + (loggedUser.jwt_token || '');
+    /*TODO wystarczy raz?*/
 
-const initLocal = localStorage.getItem("loggedUser") || '';
-const [loggedUser, setLoggedUser] = useState<LoginResponse>(initLocal.length > 0 ? JSON.parse( initLocal) : {jwt_token: ''});
+    const getAllActionTypes = () => {
+        apiService.getAllActionTypes().then(
+            (response: AxiosResponse<ActionTypeResponse[]>) => {
+                if (response.status === 200)
+                {
+                    setActionTypes(response.data);
+                }
+            }
+        )
+            .catch((e) => console.error(e));
+    }
+
+    useEffect(() => {
+        getAllActionTypes();
+    }, []);
+
 /*TODO authprovider + sprawdź ważność tokenu "time to leave"*/
 return (
     <div className="App" id="appElement">
@@ -47,34 +84,9 @@ return (
                 }
             </ul>
         </nav>
-        <Outlet context={{loggedUser, setLoggedUser}}/>
+        <Outlet context={{loggedUser, setLoggedUser, actionTypes, apiService, authService}}/>
         <Footer/>
     </div>
 );
 }
-/*TODO AUTHPROVIDER etc + czas tokena*/
 
-/*
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
-*/

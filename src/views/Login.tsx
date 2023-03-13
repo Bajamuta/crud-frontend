@@ -5,14 +5,12 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 // @ts-ignore
 import {AUTH_TOKEN} from "../react-app-env.d";
 import {FormDataLogin} from "../../helpers/interfaces";
-import {LoginResponse, ObjectContext} from "../../helpers/interfaces-responses";
-import ApiService from "../services/ApiService";
+import {LoginResponse} from "../../helpers/interfaces-responses";
+import {useMainContext} from "../App";
 
 export default function Login() {
-
-    const objectContext: ObjectContext = useOutletContext();
+    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
     const navigate = useNavigate();
-    const apiService: ApiService = new ApiService();
     const [errorMessage, setErrorMessage] = useState<string>("Incorrect username or password");
 
     const [formData, setFormData] = useState<FormDataLogin>({
@@ -23,14 +21,14 @@ export default function Login() {
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        apiService.login(formData)
+        authService.login(formData)
        .then((response: AxiosResponse<LoginResponse>) => {
             if (response.status === 200) {
                 if (!response.data.error)
                 {
                     setShowErrorMessage(false);
                     localStorage.setItem("loggedUser", JSON.stringify(response.data));
-                    objectContext.setLoggedUser(response.data);
+                    setLoggedUser(response.data);
                     navigate('/');
                 }
                 else

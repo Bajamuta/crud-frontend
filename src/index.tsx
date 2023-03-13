@@ -36,7 +36,12 @@ const router = createBrowserRouter([
                 path: "logout", element: <LogOut/>
             },
             {
-                path: "clients", element: <Clients/>
+                path: "clients", element: <Clients/>, children: [
+                    /*{
+                        path: ":clientId",
+                        element:
+                    }*/
+                ]
             },
             {
                 path: "actions", element: <Actions/>

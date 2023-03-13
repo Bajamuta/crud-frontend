@@ -7,12 +7,11 @@ import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios";
 import {ObjectContext, UserResponse} from "../../helpers/interfaces-responses";
 import { FormDataRegister } from "../../helpers/interfaces-requests";
+import {useMainContext} from "../App";
 
 export default function SignUp() {
-
-    const objectContext: ObjectContext = useOutletContext();
+    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
     const navigate = useNavigate();
-    const apiService: ApiService = new ApiService();
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<FormDataRegister>();
 
     const onSubmit: SubmitHandler<FormDataRegister> = (data: FormDataRegister) => {

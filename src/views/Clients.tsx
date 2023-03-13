@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ActionTypeResponse, ClientResponse, ObjectContext} from "../../helpers/interfaces-responses";
-import {useOutletContext} from "react-router-dom";
+import {ActionTypeResponse, ClientResponse} from "../../helpers/interfaces-responses";
 import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
@@ -8,12 +7,11 @@ import AddClient from "./AddClient";
 import ClientDetails from "./ClientDetails";
 import {ClientRequest} from "../../helpers/interfaces-requests";
 import EditClient from "./EditClient";
+import {useMainContext} from "../App";
 
 export default function Clients() {
-    const objectContext: ObjectContext = useOutletContext();
-    const apiService: ApiService = new ApiService();
+    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
     const [clients, setClients] = useState<ClientResponse[]>([]);
-    const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const [showClientDetails, setShowClientDetails] = useState<boolean>(false);
     const [showClientEdit, setShowClientEdit] = useState<boolean>(false);
@@ -24,17 +22,6 @@ export default function Clients() {
                 if (response.status === 200)
                 {
                     setClients(response.data);
-                }
-            }
-        )
-            .catch((e) => console.error(e));
-    }
-    const getAllActionTypes = () => {
-        apiService.getAllActionTypes().then(
-            (response: AxiosResponse<ActionTypeResponse[]>) => {
-                if (response.status === 200)
-                {
-                    setActionTypes(response.data);
                 }
             }
         )
@@ -119,9 +106,7 @@ export default function Clients() {
     }
     useEffect(() => {
         getAllClients();
-        getAllActionTypes();
     }, []);
-    /*TODO missing dependencies*/
 
     return (
         <div className="Container">
@@ -139,7 +124,6 @@ export default function Clients() {
 
                 </thead>
                 <tbody>
-                {/*TODO tylko klienci usera - przekazac token usera*/}
                 {clients?.map(
                     (client: ClientResponse) => {
                         return (
@@ -174,14 +158,14 @@ export default function Clients() {
             <AddClient refresh={refreshClientsList} createClient={createClient}/>
             <EditClient selectedClient={selectedClient} editClient={editClient}
                 modalIsOpen={showClientEdit} closeModal={closeClientEdit}/>
-            {showClientDetails && <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
+            {/*{showClientDetails && <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
                             actionTypes={actionTypes}
                             createAction={apiService.createAction}
                             closeModal={closeClientDetails}
                             refresh={refreshDetails}
                             deleteAction={deleteAction}
                             openEditClient={openEditClient}
-                            jwt_token={objectContext.loggedUser.jwt_token}/>}
+                            jwt_token={objectContext.loggedUser.jwt_token}/>}*/}
         </div>
     );
 }

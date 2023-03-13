@@ -51,7 +51,6 @@ import {
     ClientResponse,
     CountryResponse, UserResponse
 } from "../../helpers/interfaces-responses";
-import {FormDataLogin} from "../../helpers/interfaces";
 
 export default class ApiService {
 
@@ -212,13 +211,5 @@ export default class ApiService {
     }
     public getSingleClientPerson(id: string){
         return axios.get<ClientPersonResponse>(`${API_CLIENT_PERSON_URL}/${id}`);
-    }
-
-    public login(formData: FormDataLogin){
-        return  axios.post(`${AUTH_TOKEN}`, {
-            username: formData.username,
-            password: formData.password
-            /*TODO separate response type: loginresponse vs errorresponse*/
-        });
     }
 }

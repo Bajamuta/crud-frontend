@@ -1,24 +1,17 @@
-import React, {useEffect, useState} from "react";
-import axios, {AxiosResponse} from "axios";
+import React, {useEffect} from "react";
+import axios from "axios";
 import './Home.css';
-import {useOutletContext} from "react-router-dom";
-import ApiService from "../services/ApiService";
-import {datePipe} from "../../helpers/dateHelper";
-import {CityResponse, ObjectContext} from "../../helpers/interfaces-responses";
+import {useMainContext} from "../App";
 export default function Home() {
-
-    const objectContext: ObjectContext = useOutletContext();
-    const apiService: ApiService = new ApiService();
-
-   axios.defaults.headers.common['Authorization'] = "Bearer " + (objectContext.loggedUser.jwt_token || '');
+    const {loggedUser, actionTypes} = useMainContext();
+    axios.defaults.headers.common['Authorization'] = "Bearer " + (loggedUser.jwt_token || '');
 
     useEffect(() => {
     }, []);
 
     return (
         <div className="HomeContainer">
-            {!!objectContext.loggedUser?.jwt_token && <p>Logged as {objectContext.loggedUser.username}</p>}
-           {/* <h2>Our events:</h2>*/}
+            {!!loggedUser?.jwt_token && <p>Logged as {loggedUser.username}</p>}
             <div className="ListContainer">
                 <ul>
                     {/*{

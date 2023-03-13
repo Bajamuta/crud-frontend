@@ -8,8 +8,6 @@ import {ActionRequest} from "../../helpers/interfaces-requests";
 
 interface ClientDetailsProps {
     selectedClient: ClientResponse | null,
-    modalIsOpen: boolean,
-    closeModal: () => void,
     jwt_token: string,
     actionTypes: ActionTypeResponse[] | undefined,
     createAction: (data: ActionRequest) => Promise<any>,
@@ -59,9 +57,6 @@ export default function ClientDetails(props: ClientDetailsProps) {
             )
             .catch((error) => console.error("An error has occurred:", error));
     }
-    useEffect(() => {
-        Modal.setAppElement('body');
-    }, []);
     /*TODO szczegóły klienta jako komponent a nie modal*/
     return (
         <div>

@@ -1,36 +1,18 @@
 import React, {useEffect, useState} from "react";
-import {ActionResponse, ActionTypeResponse, ClientResponse, ObjectContext} from "../../helpers/interfaces-responses";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import {ActionResponse} from "../../helpers/interfaces-responses";
 import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios/index";
-import {Button, Form} from "react-bootstrap";
-import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {ActionRequest, ClientRequest} from "../../helpers/interfaces-requests";
+import {Button} from "react-bootstrap";
 import Modal from "react-modal";
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+import {useMainContext} from "../App";
 
 export default function Actions() {
-    const objectContext: ObjectContext = useOutletContext();
     const apiService: ApiService = new ApiService();
-    const navigate = useNavigate();
+    const {loggedUser, actionTypes} = useMainContext();
     const [actions, setActions] = useState<ActionResponse[]>();
-    const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
-    const [clients, setClients] = useState<ClientResponse[]>([]);
-    const [selectedAction, setSelectedAction] = useState<ActionResponse | null>(null);
-    const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ActionRequest>();
 
     const getAllActions = () => {
-        apiService.getActionsUser(objectContext.loggedUser.id).then(
+        apiService.getActionsUser(loggedUser.id).then(
             (response: AxiosResponse<ActionResponse[]>) => {
                 if (response.status === 200)
                 {
@@ -39,67 +21,6 @@ export default function Actions() {
             }
         )
             .catch((e) => console.error(e));
-    }
-
-    const getAllClients = () => {
-        apiService.getAllClients().then(
-            (response: AxiosResponse<ClientResponse[]>) => {
-                if (response.status === 200)
-                {
-                    setClients(response.data);
-                }
-            }
-        )
-            .catch((e) => console.error(e));
-    }
-
-    const getAllActionTypes = () => {
-        apiService.getAllActionTypes().then(
-            (response: AxiosResponse<ActionTypeResponse[]>) => {
-                if (response.status === 200)
-                {
-                    setActionTypes(response.data);
-                }
-            }
-        )
-            .catch((e) => console.error(e));
-    }
-
-    /*MODAL*/
-    let subtitle: HTMLHeadingElement | null;
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
-    }
-
-    function afterOpenModal() {
-        // references are now sync'd and can be accessed.
-        if (subtitle) {
-            subtitle.style.color = '#f00';
-        }
-    }
-
-    function closeModal(data: ActionRequest | null) {
-        setIsOpen(false);
-        if (data)
-        {
-            sendRequest(data);
-        }
-    }
-
-    const onSubmit: SubmitHandler<ActionRequest> = (data: ActionRequest) => {
-        closeModal(data);
-    }
-
-    const sendRequest = (data: ActionRequest) => {
-        apiService.createAction(data)
-            .then(
-                (response: AxiosResponse<Response>) => {
-                    getAllActions();
-                }
-            )
-            .catch((error) => console.error("An error has occurred:", error));
     }
 
     const deleteAction = (id: string) => {
@@ -119,8 +40,6 @@ export default function Actions() {
     useEffect(() => {
         Modal.setAppElement('body');
         getAllActions();
-        getAllClients();
-        getAllActionTypes();
     }, []);
     return (
         <div className="TableContainer">
