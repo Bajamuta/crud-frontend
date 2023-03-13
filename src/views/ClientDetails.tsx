@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {ActionResponse, ActionTypeResponse, ClientResponse} from "../../helpers/interfaces-responses";
-import Modal from "react-modal";
 import {Button, Form} from "react-bootstrap";
 import {AxiosResponse} from "axios";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
@@ -8,14 +7,7 @@ import {ActionRequest} from "../../helpers/interfaces-requests";
 import {useMainContext} from "../App";
 import {useParams} from "react-router-dom";
 
-interface ClientDetailsProps {
-   /* createAction: (data: ActionRequest) => Promise<any>,
-    refresh: () => void,
-    deleteAction: (id: string) => Promise<any>,
-    openEditClient: () => void*/
-}
-
-export default function ClientDetails(props: ClientDetailsProps) {
+export default function ClientDetails() {
     const {clientId} = useParams<string>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const {loggedUser, actionTypes, apiService} = useMainContext();
