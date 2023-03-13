@@ -5,54 +5,58 @@ import {Button, Form} from "react-bootstrap";
 import {AxiosResponse} from "axios";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {ActionRequest} from "../../helpers/interfaces-requests";
+import {useMainContext} from "../App";
+import {useParams} from "react-router-dom";
 
 interface ClientDetailsProps {
-    selectedClient: ClientResponse | null,
-    jwt_token: string,
-    actionTypes: ActionTypeResponse[] | undefined,
-    createAction: (data: ActionRequest) => Promise<any>,
+   /* createAction: (data: ActionRequest) => Promise<any>,
     refresh: () => void,
     deleteAction: (id: string) => Promise<any>,
-    openEditClient: () => void
+    openEditClient: () => void*/
 }
 
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        boxShadow: '6px 6px 20px lightgray'
-    },
-};
-
 export default function ClientDetails(props: ClientDetailsProps) {
-    let subtitle: HTMLHeadingElement | null;
+    const {clientId} = useParams<string>();
+    const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
+    const {loggedUser, actionTypes, apiService} = useMainContext();
     const [showAddAction, setShowAddAction] = useState<boolean>(false);
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ActionRequest>();
-    function afterOpenModal() {
-        // references are now sync'd and can be accessed.
-        if (subtitle) {
-            subtitle.style.color = '#f00';
+
+    const getClientDetails = () => {
+        if (clientId)
+        {
+            apiService.getSingleClient(clientId)
+                .then((response: AxiosResponse<ClientResponse>) => {
+                    if (response.status === 200) {
+                        setSelectedClient(response.data);
+                    }
+                    else {
+                        console.log(response);
+                    }
+                })
+                .catch((error) => console.error("An error has occurred:", error));
         }
     }
+
+
+    useEffect(() => {
+        getClientDetails();
+    }, []);
     const onSubmit: SubmitHandler<ActionRequest> = (data: ActionRequest) => {
-        props.createAction(data)
+        apiService.createAction(data)
             .then(
                 (response: AxiosResponse<Response>) => {
                     setShowAddAction(false);
-                    props.refresh();
+                    /*props.refresh();*/
                 }
             )
             .catch((error) => console.error("An error has occurred:", error));
     }
     const deleteAction = (id: string) => {
-        return props.deleteAction(id)
+        return apiService.deleteAction(id)
             .then(
                 (response: AxiosResponse<Response>) => {
-                    props.refresh();
+                    /*props.refresh();*/
                 }
             )
             .catch((error) => console.error("An error has occurred:", error));
@@ -60,21 +64,21 @@ export default function ClientDetails(props: ClientDetailsProps) {
     /*TODO szczegóły klienta jako komponent a nie modal*/
     return (
         <div>
-            <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
-                Client: {props.selectedClient?.firstname} {props.selectedClient?.surname}
+            <h2>
+                Client: {selectedClient?.firstname} {selectedClient?.surname}
             </h2>
             <div className="my-4">
-                <Button variant="info" type="button" size="lg" className="w-50" onClick={props.openEditClient}>Edit details</Button>
+                {/*<Button variant="info" type="button" size="lg" className="w-50" onClick={props.openEditClient}>Edit details</Button>*/}
                 <p><span className="fw-bold">Is company: </span>
-                    {props.selectedClient?.business && 'YES'}
-                    {!props.selectedClient?.business && 'NO'}
+                    {selectedClient?.business && 'YES'}
+                    {!selectedClient?.business && 'NO'}
                 </p>
-                <p><span className="fw-bold">Email: </span> {props.selectedClient?.email}</p>
-                <p><span className="fw-bold">Phone: </span> {props.selectedClient?.phone}</p>
-                <h3>Actions ({props.selectedClient?.actions?.length}):</h3>
+                <p><span className="fw-bold">Email: </span> {selectedClient?.email}</p>
+                <p><span className="fw-bold">Phone: </span> {selectedClient?.phone}</p>
+                <h3>Actions ({selectedClient?.actions?.length}):</h3>
                 <ul>
                     {
-                        props.selectedClient?.actions?.map(
+                        selectedClient?.actions?.map(
                             (action: ActionResponse) => {
                                 return (
                                     <li key={action._id}>
@@ -91,11 +95,11 @@ export default function ClientDetails(props: ClientDetailsProps) {
                 {!showAddAction && <Button type="button" variant="info" onClick={() => setShowAddAction(true)} className="my-3">Add action</Button>}
                 {showAddAction &&
                     <div className="p-4 border-3 border shadow">
-                        <h5>New action for {props.selectedClient?.firstname} {props.selectedClient?.surname}</h5>
+                        <h5>New action for {selectedClient?.firstname} {selectedClient?.surname}</h5>
                         <Form name="newActionForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                             <Form.Group className="" controlId="token" hidden>
                                 <Form.Label>Token*:</Form.Label>
-                                <Controller control={control} name="token" defaultValue={props.jwt_token}
+                                <Controller control={control} name="token" defaultValue={loggedUser.jwt_token}
                                             render={({field: {onChange, onBlur, value, ref}}) => (
                                                 <Form.Control type="text" placeholder="Token"
                                                               required
@@ -110,7 +114,7 @@ export default function ClientDetails(props: ClientDetailsProps) {
                             </Form.Group>
                             <Form.Group className="" controlId="clientId" hidden>
                                 <Form.Label>ClientId*:</Form.Label>
-                                <Controller control={control} name="clientId" defaultValue={props.selectedClient?._id}
+                                <Controller control={control} name="clientId" defaultValue={selectedClient?._id}
                                             render={({field: {onChange, onBlur, value, ref}}) => (
                                                 <Form.Control type="text" placeholder="ClientId"
                                                               required
@@ -126,7 +130,7 @@ export default function ClientDetails(props: ClientDetailsProps) {
                             <Form.Group className="" controlId="typeId">
                                 <Form.Label>Type of action*:</Form.Label>
                                 {
-                                    props.actionTypes?.map(
+                                    actionTypes?.map(
                                         (actionType: ActionTypeResponse) => {
                                             return (
                                                 <Controller control={control} name="typeId" key={actionType._id}

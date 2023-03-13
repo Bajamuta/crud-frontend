@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ActionTypeResponse, ClientResponse} from "../../helpers/interfaces-responses";
-import ApiService from "../services/ApiService";
+import {ClientResponse} from "../../helpers/interfaces-responses";
 import {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
 import AddClient from "./AddClient";
@@ -8,11 +7,12 @@ import ClientDetails from "./ClientDetails";
 import {ClientRequest} from "../../helpers/interfaces-requests";
 import EditClient from "./EditClient";
 import {useMainContext} from "../App";
+import {useNavigate} from "react-router-dom";
 
 export default function Clients() {
-    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
+    const navigate = useNavigate();
+    const {apiService} = useMainContext();
     const [clients, setClients] = useState<ClientResponse[]>([]);
-    const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const [showClientDetails, setShowClientDetails] = useState<boolean>(false);
     const [showClientEdit, setShowClientEdit] = useState<boolean>(false);
 
@@ -42,42 +42,32 @@ export default function Clients() {
     const createClient = (data: ClientRequest) => {
         return apiService.createClient({...data});
     }
-    const editClient = (data: ClientRequest) => {
+    /*const editClient = (data: ClientRequest) => {
         if(selectedClient)
         {
             apiService.updateClient(selectedClient?._id, data)
                 .then(
                     (response: AxiosResponse<ClientResponse>) => {
-                        setShowClientEdit(false);
+                        /!*setShowClientEdit(false);*!/
                         setSelectedClient(null);
                         getAllClients();
                     }
                 )
                 .catch((error) => console.error("An error has occurred:", error));
         }
-    }
+    }*/
 
     const deleteAction = (id: string) => {
         return apiService.deleteAction(id);
     }
     const openClientDetails = (id: string) => {
-        apiService.getSingleClient(id)
-            .then((response: AxiosResponse<ClientResponse>) => {
-                if (response.status === 200) {
-                    setSelectedClient(response.data);
-                    setShowClientDetails(true);
-                }
-                else {
-                    console.log(response);
-                }
-            })
-            .catch((error) => console.error("An error has occurred:", error));
+        navigate(`/clients/${id}`);
     }
     const openEditClient = () => {
         setShowClientDetails(false);
         setShowClientEdit(true);
     }
-    const refreshDetails = () => {
+    /*const refreshDetails = () => {
         if (selectedClient)
         {
             apiService.getSingleClient(selectedClient._id)
@@ -91,18 +81,18 @@ export default function Clients() {
                 })
                 .catch((error) => console.error("An error has occurred:", error));
         }
-    }
+    }*/
     const refreshClientsList = () => {
         getAllClients();
     }
     const closeClientDetails = () => {
         setShowClientDetails(false);
-        setSelectedClient(null);
+        // setSelectedClient(null);
         getAllClients();
     }
     const closeClientEdit = () => {
         setShowClientEdit(false);
-        setSelectedClient(null);
+        // setSelectedClient(null);
     }
     useEffect(() => {
         getAllClients();
@@ -156,8 +146,8 @@ export default function Clients() {
 
             </ul>
             <AddClient refresh={refreshClientsList} createClient={createClient}/>
-            <EditClient selectedClient={selectedClient} editClient={editClient}
-                modalIsOpen={showClientEdit} closeModal={closeClientEdit}/>
+            {/*<EditClient selectedClient={selectedClient} editClient={editClient}
+                modalIsOpen={showClientEdit} closeModal={closeClientEdit}/>*/}
             {/*{showClientDetails && <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
                             actionTypes={actionTypes}
                             createAction={apiService.createAction}

@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {ActionResponse} from "../../helpers/interfaces-responses";
-import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios/index";
 import {Button} from "react-bootstrap";
 import Modal from "react-modal";
 import {useMainContext} from "../App";
 
 export default function Actions() {
-    const apiService: ApiService = new ApiService();
-    const {loggedUser, actionTypes} = useMainContext();
+    const {loggedUser, apiService} = useMainContext();
     const [actions, setActions] = useState<ActionResponse[]>();
 
     const getAllActions = () => {

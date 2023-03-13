@@ -26,7 +26,6 @@ export default function App() {
     const authService = new AuthService();
     const [loggedUser, setLoggedUser] = useState<LoginResponse>(initLocal.length > 0 ? JSON.parse( initLocal) : {jwt_token: ''});
     const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
-    const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
 
     axios.defaults.headers.common['Authorization'] = "Bearer " + (loggedUser.jwt_token || '');
     /*TODO wystarczy raz?*/

@@ -14,6 +14,8 @@ import Clients from "./views/Clients";
 import Actions from "./views/Actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Registered from "./views/Registered";
+import ClientDetails from "./views/ClientDetails";
+import ClientIndex from "./views/ClientIndex";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,10 +23,11 @@ const root = ReactDOM.createRoot(
 
 const router = createBrowserRouter([
     {
+        path: "/",
         element: <App/>,
         children: [
             {
-                path: "/", element: <Home/>, index: true
+               element: <Home/>, index: true
             },
             {
                 path: "login", element: <Login/>,
@@ -36,11 +39,15 @@ const router = createBrowserRouter([
                 path: "logout", element: <LogOut/>
             },
             {
-                path: "clients", element: <Clients/>, children: [
-                    /*{
+                path: "clients", element: <ClientIndex/>,
+                children: [
+                    {
+                        element: <Clients/>, index: true
+                    },
+                    {
                         path: ":clientId",
-                        element:
-                    }*/
+                        element: <ClientDetails/>
+                    }
                 ]
             },
             {
