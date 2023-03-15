@@ -7,7 +7,7 @@ export default function LogOut() {
     useEffect(() => {
         localStorage.removeItem("loggedUser");
         setLoggedUser({jwt_token: "", username: "", ttl: "", id: "", error: ""});
-    });
+    }, []);
 
     return (<div className="">
         <h2>Log Out</h2>

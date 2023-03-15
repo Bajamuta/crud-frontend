@@ -15,6 +15,7 @@ export default function ClientDetails() {
     const [showAddAction, setShowAddAction] = useState<boolean>(false);
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ActionRequest>();
 
+    /*TODO EditProvider + odświeżanie po dodaniu akcji*/
     const getClientDetails = () => {
         if (clientId)
         {
