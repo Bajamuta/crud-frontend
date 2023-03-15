@@ -53,10 +53,9 @@ export default function ClientDetails() {
             )
             .catch((error) => console.error("An error has occurred:", error));
     }
-    /*TODO szczegóły klienta jako komponent a nie modal*/
     return (
         <div>
-            <h2>
+            <h2 className="mb-4">
                 Client: {selectedClient?.firstname} {selectedClient?.surname}
             </h2>
             <div className="my-4">

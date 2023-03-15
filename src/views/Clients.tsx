@@ -2,10 +2,7 @@ import React, {useEffect, useState} from "react";
 import {ClientResponse} from "../../helpers/interfaces-responses";
 import {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
-import AddClient from "./AddClient";
-import ClientDetails from "./ClientDetails";
 import {ClientRequest} from "../../helpers/interfaces-requests";
-import EditClient from "./EditClient";
 import {useMainContext} from "../App";
 import {useNavigate} from "react-router-dom";
 
@@ -13,8 +10,6 @@ export default function Clients() {
     const navigate = useNavigate();
     const {apiService} = useMainContext();
     const [clients, setClients] = useState<ClientResponse[]>([]);
-    const [showClientDetails, setShowClientDetails] = useState<boolean>(false);
-    const [showClientEdit, setShowClientEdit] = useState<boolean>(false);
 
     const getAllClients = () => {
         apiService.getAllClients().then(
@@ -39,70 +34,18 @@ export default function Clients() {
             })
             .catch((error) => console.error("An error has occurred:", error));
     }
-    const createClient = (data: ClientRequest) => {
-        return apiService.createClient({...data});
-    }
-    /*const editClient = (data: ClientRequest) => {
-        if(selectedClient)
-        {
-            apiService.updateClient(selectedClient?._id, data)
-                .then(
-                    (response: AxiosResponse<ClientResponse>) => {
-                        /!*setShowClientEdit(false);*!/
-                        setSelectedClient(null);
-                        getAllClients();
-                    }
-                )
-                .catch((error) => console.error("An error has occurred:", error));
-        }
-    }*/
-
-    const deleteAction = (id: string) => {
-        return apiService.deleteAction(id);
-    }
     const openClientDetails = (id: string) => {
         navigate(`/clients/${id}`);
-    }
-    const openEditClient = () => {
-        setShowClientDetails(false);
-        setShowClientEdit(true);
-    }
-    /*const refreshDetails = () => {
-        if (selectedClient)
-        {
-            apiService.getSingleClient(selectedClient._id)
-                .then((response: AxiosResponse<ClientResponse>) => {
-                    if (response.status === 200) {
-                        setSelectedClient(response.data);
-                    }
-                    else {
-                        console.log(response);
-                    }
-                })
-                .catch((error) => console.error("An error has occurred:", error));
-        }
-    }*/
-    const refreshClientsList = () => {
-        getAllClients();
-    }
-    const closeClientDetails = () => {
-        setShowClientDetails(false);
-        // setSelectedClient(null);
-        getAllClients();
-    }
-    const closeClientEdit = () => {
-        setShowClientEdit(false);
-        // setSelectedClient(null);
     }
     useEffect(() => {
         getAllClients();
     }, []);
 
     return (
-        <div className="Container">
-            <h3>Clients</h3>
-            <table>
-                <thead>
+        <div className="">
+            <h3 className="mb-4">Clients</h3>
+            <table className="table">
+                <thead className="table-light">
                 <tr>
                     <th scope="col">Lp.</th>
                     <th scope="col">First name</th>
@@ -115,10 +58,10 @@ export default function Clients() {
                 </thead>
                 <tbody>
                 {clients?.map(
-                    (client: ClientResponse) => {
+                    (client: ClientResponse, index: number) => {
                         return (
                         <tr key={client._id}>
-                            <th scope="row">{client._id}</th>
+                            <th scope="row">{index + 1}</th>
                             <td>{client.firstname}</td>
                             <td>{client.surname}</td>
                             <td>{client.phone}</td>
@@ -136,7 +79,7 @@ export default function Clients() {
                 )}
 
                 </tbody>
-                <tfoot>
+                <tfoot className="table-light">
                 <tr>
                     <td colSpan={6}>Total: {clients?.length} client(s)</td>
                 </tr>
@@ -145,17 +88,7 @@ export default function Clients() {
             <ul>
 
             </ul>
-            <AddClient refresh={refreshClientsList} createClient={createClient}/>
-            {/*<EditClient selectedClient={selectedClient} editClient={editClient}
-                modalIsOpen={showClientEdit} closeModal={closeClientEdit}/>*/}
-            {/*{showClientDetails && <ClientDetails selectedClient={selectedClient} modalIsOpen={showClientDetails}
-                            actionTypes={actionTypes}
-                            createAction={apiService.createAction}
-                            closeModal={closeClientDetails}
-                            refresh={refreshDetails}
-                            deleteAction={deleteAction}
-                            openEditClient={openEditClient}
-                            jwt_token={objectContext.loggedUser.jwt_token}/>}*/}
+{/*            <AddClient refresh={refreshClientsList} createClient={createClient}/>*/}
         </div>
     );
 }

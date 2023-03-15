@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import axios from "axios";
-import './Home.css';
+import '../styles/Home.css';
 import {useMainContext} from "../App";
 export default function Home() {
     const {loggedUser, actionTypes} = useMainContext();
@@ -10,21 +10,10 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="HomeContainer">
+        <div className="">
             {!!loggedUser?.jwt_token && <p>Logged as {loggedUser.username}</p>}
-            <div className="ListContainer">
-                <ul>
-                    {/*{
-                        events?.map(
-                            (event: EventResponse) => {
-                                return (<li key={event._id}>
-                                            {event.subject} {event.description} {datePipe(event.date)}
-                                        </li>);
-                            }
-                        )
-                    }*/}
-                </ul>
-            </div>
+            <h2>Welcome!</h2>
+            <p>Please select page from menu on the left.</p>
         </div>
     );
 }

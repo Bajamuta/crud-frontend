@@ -5,7 +5,7 @@ export default function Registered() {
 
     const navigate = useNavigate();
 
-    return (<div className="Container">
+    return (<div className="">
         <h2>Registered</h2>
         <p>You have been successfully registered!</p>
         <button className="btn btn-primary btn-lg mb-5"

@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Registered from "./views/Registered";
 import ClientDetails from "./views/ClientDetails";
 import ClientIndex from "./views/ClientIndex";
+import AddClient from "./views/AddClient";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
                     {
                         path: ":clientId",
                         element: <ClientDetails/>
+                    },
+                    {
+                        path: "add",
+                        element: <AddClient/>
                     }
                 ]
             },

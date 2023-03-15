@@ -1,16 +1,15 @@
-import React, {ChangeEvent} from "react";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import React from "react";
+import {useNavigate} from "react-router-dom";
 import {SubmitHandler, useForm, Controller} from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import {Button} from "react-bootstrap";
-import ApiService from "../services/ApiService";
 import {AxiosResponse} from "axios";
-import {ObjectContext, UserResponse} from "../../helpers/interfaces-responses";
+import {UserResponse} from "../../helpers/interfaces-responses";
 import { FormDataRegister } from "../../helpers/interfaces-requests";
 import {useMainContext} from "../App";
 
 export default function SignUp() {
-    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
+    const {apiService} = useMainContext();
     const navigate = useNavigate();
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<FormDataRegister>();
 
@@ -39,7 +38,7 @@ export default function SignUp() {
             && watch().password === watch().passwordConfirm;
     }
 
-    return (<div className="Container BorderContainer mb-5">
+    return (<div className="BorderContainer mb-5">
         <h2>Sign Up</h2>
         <Form name="signupForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
             <Form.Group className="" controlId="username">

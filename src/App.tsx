@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {ActionTypeResponse, ClientResponse, LoginResponse} from "../helpers/interfaces-responses";
+import {ActionTypeResponse, LoginResponse} from "../helpers/interfaces-responses";
 import Header from "./views/Header";
-import {Link, Outlet, useOutletContext} from "react-router-dom";
+import {Outlet, useOutletContext} from "react-router-dom";
 import Footer from "./views/Footer";
 import ApiService from "./services/ApiService";
 import axios, {AxiosResponse} from "axios";
 import AuthService from "./services/AuthService";
+import Navbar from "./views/Navbar";
 
 type ContextType = {
     loggedUser: LoginResponse,
@@ -28,7 +29,6 @@ export default function App() {
     const [actionTypes, setActionTypes] = useState<ActionTypeResponse[]>();
 
     axios.defaults.headers.common['Authorization'] = "Bearer " + (loggedUser.jwt_token || '');
-    /*TODO wystarczy raz?*/
 
     const getAllActionTypes = () => {
         apiService.getAllActionTypes().then(
@@ -48,43 +48,17 @@ export default function App() {
 
 /*TODO authprovider + sprawdź ważność tokenu "time to leave"*/
 return (
-    <div className="App" id="appElement">
-        <Header/>
-        <nav className="AppNavbar">
-            <ul>
-                <li>
-                    <Link to={"/"}>HOME</Link>
-                </li>
-                <li>
-                    <Link to={"/clients"}>CLIENTS</Link>
-                </li>
-                <li>
-                    <Link to={"/actions"}>ACTIONS</Link>
-                </li>
-                {!loggedUser?.jwt_token &&
-                    <li>
-                        <Link to={"/login"}>LOG IN</Link>
-                    </li>
-                }
-                {!loggedUser?.jwt_token &&
-                    <li>
-                        <Link to={"/signup"}>SIGN UP</Link>
-                    </li>
-                }
-                {!!loggedUser?.jwt_token &&
-                    <li>
-                        <Link to={"/logout"}>LOG OUT</Link>
-                    </li>
-                }
-                {!!loggedUser?.jwt_token &&
-                    <li>
-                        <Link to={"/user"}>USER</Link>
-                    </li>
-                }
-            </ul>
-        </nav>
-        <Outlet context={{loggedUser, setLoggedUser, actionTypes, apiService, authService}}/>
-        <Footer/>
+    <div className="container-fluid" id="appElement">
+        <div className="row">
+            <aside className="AppAside col-md-2 bg-light sidebar">
+                <Header/>
+                <Navbar loggedUser={loggedUser}/>
+            </aside>
+            <main role="main" className="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <Outlet context={{loggedUser, setLoggedUser, actionTypes, apiService, authService}}/>
+                <Footer/>
+            </main>
+        </div>
     </div>
 );
 }

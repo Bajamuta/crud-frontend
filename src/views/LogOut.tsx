@@ -1,17 +1,15 @@
 import React, {useEffect} from "react";
-import {useOutletContext} from "react-router-dom";
-import "./LogOut.css";
-import {ObjectContext} from "../../helpers/interfaces-responses";
+import "../styles/LogOut.css";
 import {useMainContext} from "../App";
 
 export default function LogOut() {
-    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
+    const {setLoggedUser} = useMainContext();
     useEffect(() => {
         localStorage.removeItem("loggedUser");
         setLoggedUser({jwt_token: "", username: "", ttl: "", id: "", error: ""});
     });
 
-    return (<div className="Container">
+    return (<div className="">
         <h2>Log Out</h2>
         <p>You have been successfully logged out.</p>
     </div>);

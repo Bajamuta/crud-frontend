@@ -1,15 +1,13 @@
 import React, {FormEvent, useState} from "react";
-import './Login.css';
-import axios, {AxiosResponse} from "axios";
-import {useNavigate, useOutletContext} from "react-router-dom";
-// @ts-ignore
-import {AUTH_TOKEN} from "../react-app-env.d";
+import '../styles/Login.css';
+import {AxiosResponse} from "axios";
+import {useNavigate} from "react-router-dom";
 import {FormDataLogin} from "../../helpers/interfaces";
 import {LoginResponse} from "../../helpers/interfaces-responses";
 import {useMainContext} from "../App";
 
 export default function Login() {
-    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
+    const {setLoggedUser, authService} = useMainContext();
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>("Incorrect username or password");
 
@@ -54,7 +52,7 @@ export default function Login() {
         });
         setShowErrorMessage(false);
     }
-    return (<div className="Container BorderContainer mb-5">
+    return (<div className="BorderContainer mb-5">
         <h2>Log In</h2>
         <form className="FormBody" onSubmit={handleSubmit}>
             <label form={formData.username} className="form-label">Username*:</label>

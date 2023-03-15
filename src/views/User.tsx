@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useOutletContext} from "react-router-dom";
-import axios, {AxiosResponse} from "axios";
+import {useNavigate,} from "react-router-dom";
+import {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
 import EditProfile from "./EditProfile";
 import {UserResponse} from "../../helpers/interfaces-responses";
@@ -17,7 +17,7 @@ export default function User() {
         avatarUrl: '',
         actions: []
     };
-    const {loggedUser, setLoggedUser, actionTypes, apiService, authService} = useMainContext();
+    const {loggedUser, apiService} = useMainContext();
     const defaultAvatarUrl = 'https://images.unsplash.com/photo-1622227056993-6e7f88420855?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80';
     const [userDetails, setUserDetails] = useState<UserResponse>(initUser);
     const [showEdit, setShowEdit] = useState<boolean>(false);
@@ -61,7 +61,7 @@ export default function User() {
     }
 
     return (
-        <div className="HomeContainer">
+        <div className="">
             <div className="d-flex justify-content-between">
                 <img className="UserAvatar w-50" src={userDetails?.avatarUrl || defaultAvatarUrl} alt="user's avatar" />
                 <div className="w-50">
