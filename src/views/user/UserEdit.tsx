@@ -1,31 +1,59 @@
-import ApiService from "../services/ApiService";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {AxiosResponse} from "axios/index";
 import {useNavigate} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
-import React, {useEffect} from "react";
-import {FormDataRegister} from "../../helpers/interfaces-requests";
-import {UserResponse} from "../../helpers/interfaces-responses";
+import React, {useEffect, useState} from "react";
+import {FormDataRegister} from "../../../helpers/interfaces-requests";
+import {UserResponse} from "../../../helpers/interfaces-responses";
+import {useMainContext} from "../../App";
 
-interface EditProfileProps {
-    userDetails: UserResponse;
-    cancel: () => void;
-    refreshView: () => void;
-}
-
-export default function EditProfile(props: EditProfileProps) {
-
-    const apiService: ApiService = new ApiService();
+export default function UserEdit() {
+    const initUser = {
+        _id: '',
+        createdAt: '',
+        firstname: '',
+        surname: '',
+        username: '',
+        email: '',
+        avatarUrl: '',
+        actions: []
+    };
+    const {loggedUser, apiService} = useMainContext();
+    const [userDetails, setUserDetails] = useState<UserResponse>(initUser);
+    const defaultAvatarUrl = 'https://images.unsplash.com/photo-1622227056993-6e7f88420855?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80';
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<FormDataRegister>();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        getUserDetails();
+    }, []);
+
+    const getUserDetails = (): Promise<UserResponse | void> => {
+        return apiService.getSingleUser(loggedUser.id)
+            .then(
+                (response: AxiosResponse<UserResponse>) => {
+                    if (!response.data.error) {
+                        return Promise.resolve(response.data);
+                    } else {
+                        console.error('An error has occurred during retrieving logged user\'s details', response.data.error);
+                        return Promise.reject();
+                    }
+                }
+            )
+            .then((userDetails: UserResponse) => {
+                setUserDetails(userDetails);
+            })
+            .catch((error) => console.error("An error has occurred:", error));
+    }
+
     const onSubmit: SubmitHandler<FormDataRegister> = (data: FormDataRegister) => {
-        apiService.updateUser(props.userDetails._id, data)
+        apiService.updateUser(userDetails._id, data)
             .then((response: AxiosResponse<UserResponse>) => {
                 if (response.status === 200) {
                     if (!response.data.error)
                     {
-                        props.refreshView();
+                        navigate('/user');
                         /*TODO poprawić grafikę*/
                     }
                     else
@@ -48,11 +76,11 @@ export default function EditProfile(props: EditProfileProps) {
 
     return (
         <div className="FormContainer">
-            <h2>Edit profile</h2>
+            <h2 className="mb-4">Edit user info:</h2>
             <Form name="signupForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="my-3" controlId="username">
                     <Form.Label>Username*:</Form.Label>
-                    <Controller control={control} name="username" defaultValue={props.userDetails?.username}
+                    <Controller control={control} name="username" defaultValue={userDetails?.username}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter username"
                                                   required
@@ -67,7 +95,7 @@ export default function EditProfile(props: EditProfileProps) {
                 </Form.Group>
                 <Form.Group className="my-3" controlId="firstname">
                     <Form.Label>Name*:</Form.Label>
-                    <Controller control={control} name="firstname" defaultValue={props.userDetails?.firstname}
+                    <Controller control={control} name="firstname" defaultValue={userDetails?.firstname}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter subject"
                                                   required
@@ -82,7 +110,7 @@ export default function EditProfile(props: EditProfileProps) {
                 </Form.Group>
                 <Form.Group className="my-3" controlId="surname">
                     <Form.Label>Surname*:</Form.Label>
-                    <Controller control={control} name="surname" defaultValue={props.userDetails?.surname}
+                    <Controller control={control} name="surname" defaultValue={userDetails?.surname}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter surname"
                                                   required
@@ -97,7 +125,7 @@ export default function EditProfile(props: EditProfileProps) {
                 </Form.Group>
                 <Form.Group className="my-3" controlId="email">
                     <Form.Label>Email*:</Form.Label>
-                    <Controller control={control} name="email" defaultValue={props.userDetails?.email}
+                    <Controller control={control} name="email" defaultValue={userDetails?.email}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="email" placeholder="Enter email"
                                                   required
@@ -146,7 +174,6 @@ export default function EditProfile(props: EditProfileProps) {
                     {errors.passwordConfirm && <Form.Text className="ValidationMessage">{errors.passwordConfirm?.message}</Form.Text>}
                 </Form.Group>
                 <div className="ButtonsContainer">
-                    <Button variant="outline-danger" size="lg" type="reset" onClick={props.cancel}>Cancel</Button>
                     <Button variant="primary" size="lg" type="submit">Save</Button>
                 </div>
             </Form>

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {ClientResponse} from "../../helpers/interfaces-responses";
+import {ClientResponse} from "../../../helpers/interfaces-responses";
 import {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
-import {ClientRequest} from "../../helpers/interfaces-requests";
-import {useMainContext} from "../App";
+import {ClientRequest} from "../../../helpers/interfaces-requests";
+import {useMainContext} from "../../App";
 import {useNavigate} from "react-router-dom";
 
 export default function Clients() {
@@ -35,7 +35,7 @@ export default function Clients() {
             .catch((error) => console.error("An error has occurred:", error));
     }
     const openClientDetails = (id: string) => {
-        navigate(`/clients/${id}`);
+        navigate(`/clients/${id}/show`);
     }
     useEffect(() => {
         getAllClients();
@@ -85,10 +85,8 @@ export default function Clients() {
                 </tr>
                 </tfoot>
             </table>
-            <ul>
-
-            </ul>
-{/*            <AddClient refresh={refreshClientsList} createClient={createClient}/>*/}
+            {/*TODO przycisk dodaj klienta*/}
+{/*            <ClientAdd refresh={refreshClientsList} createClient={createClient}/>*/}
         </div>
     );
 }

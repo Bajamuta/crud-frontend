@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import {ActionTypeResponse, LoginResponse} from "../helpers/interfaces-responses";
-import Header from "./views/Header";
+import Header from "./views/elements/Header";
 import {Outlet, useOutletContext} from "react-router-dom";
-import Footer from "./views/Footer";
+import Footer from "./views/elements/Footer";
 import ApiService from "./services/ApiService";
 import axios, {AxiosResponse} from "axios";
 import AuthService from "./services/AuthService";
-import Navbar from "./views/Navbar";
+import Navbar from "./views/elements/Navbar";
 
 type ContextType = {
     loggedUser: LoginResponse,

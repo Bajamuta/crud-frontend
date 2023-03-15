@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {ActionResponse, ActionTypeResponse, ClientResponse} from "../../helpers/interfaces-responses";
+import {ActionResponse, ActionTypeResponse, ClientResponse} from "../../../helpers/interfaces-responses";
 import {Button, Form} from "react-bootstrap";
 import {AxiosResponse} from "axios";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {ActionRequest} from "../../helpers/interfaces-requests";
-import {useMainContext} from "../App";
-import {useParams} from "react-router-dom";
+import {ActionRequest} from "../../../helpers/interfaces-requests";
+import {useMainContext} from "../../App";
+import {useNavigate, useParams} from "react-router-dom";
 
 export default function ClientDetails() {
+    const navigate = useNavigate();
     const {clientId} = useParams<string>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const {loggedUser, actionTypes, apiService} = useMainContext();
@@ -29,8 +30,6 @@ export default function ClientDetails() {
                 .catch((error) => console.error("An error has occurred:", error));
         }
     }
-
-
     useEffect(() => {
         getClientDetails();
     }, []);
@@ -44,11 +43,14 @@ export default function ClientDetails() {
             )
             .catch((error) => console.error("An error has occurred:", error));
     }
+    const openEditClient = () => {
+        navigate(`/clients/${clientId}/edit`);
+    }
     const deleteAction = (id: string) => {
         return apiService.deleteAction(id)
             .then(
                 (response: AxiosResponse<Response>) => {
-                    /*props.refresh();*/
+                    getClientDetails();
                 }
             )
             .catch((error) => console.error("An error has occurred:", error));
@@ -57,9 +59,9 @@ export default function ClientDetails() {
         <div>
             <h2 className="mb-4">
                 Client: {selectedClient?.firstname} {selectedClient?.surname}
+                <Button variant="info" type="button" size="sm" className="" onClick={openEditClient}>Edit details</Button>
             </h2>
             <div className="my-4">
-                {/*<Button variant="info" type="button" size="lg" className="w-50" onClick={props.openEditClient}>Edit details</Button>*/}
                 <p><span className="fw-bold">Is company: </span>
                     {selectedClient?.business && 'YES'}
                     {!selectedClient?.business && 'NO'}

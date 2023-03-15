@@ -1,7 +1,7 @@
 import React from "react";
 import {Navigate} from "react-router-dom";
-import {LoginResponse} from "../../helpers/interfaces-responses";
-import '../styles/Navbar.css';
+import {LoginResponse} from "../../../helpers/interfaces-responses";
+import '../../styles/Navbar.css';
 import {Nav} from "react-bootstrap";
 
 interface NavbarProps {
@@ -55,18 +55,6 @@ export default function Navbar(props: NavbarProps) {
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="5" href="/actions">Actions</Nav.Link>
-                                <Nav className="NavbarSide flex-column">
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="6" href="/actions">
-                                            All actions
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="7" href="/actions/add">
-                                            Add new action
-                                        </Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="0" href="/logout">Logout</Nav.Link>

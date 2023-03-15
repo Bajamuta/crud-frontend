@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import "../styles/LogOut.css";
-import {useMainContext} from "../App";
+import "../../styles/LogOut.css";
+import {useMainContext} from "../../App";
 
 export default function LogOut() {
     const {setLoggedUser} = useMainContext();

@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import axios from "axios";
-import '../styles/Home.css';
-import {useMainContext} from "../App";
+import '../../styles/Home.css';
+import {useMainContext} from "../../App";
 export default function Home() {
     const {loggedUser, actionTypes} = useMainContext();
     axios.defaults.headers.common['Authorization'] = "Bearer " + (loggedUser.jwt_token || '');

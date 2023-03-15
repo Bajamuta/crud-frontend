@@ -1,10 +1,10 @@
 import React, {FormEvent, useState} from "react";
-import '../styles/Login.css';
+import '../../styles/Login.css';
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
-import {FormDataLogin} from "../../helpers/interfaces";
-import {LoginResponse} from "../../helpers/interfaces-responses";
-import {useMainContext} from "../App";
+import {FormDataLogin} from "../../../helpers/interfaces";
+import {LoginResponse} from "../../../helpers/interfaces-responses";
+import {useMainContext} from "../../App";
 
 export default function Login() {
     const {setLoggedUser, authService} = useMainContext();

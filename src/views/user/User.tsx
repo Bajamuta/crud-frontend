@@ -2,9 +2,8 @@ import React, {useEffect, useState} from "react";
 import {useNavigate,} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
-import EditProfile from "./EditProfile";
-import {UserResponse} from "../../helpers/interfaces-responses";
-import {useMainContext} from "../App";
+import {UserResponse} from "../../../helpers/interfaces-responses";
+import {useMainContext} from "../../App";
 
 export default function User() {
     const initUser = {
@@ -20,16 +19,14 @@ export default function User() {
     const {loggedUser, apiService} = useMainContext();
     const defaultAvatarUrl = 'https://images.unsplash.com/photo-1622227056993-6e7f88420855?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80';
     const [userDetails, setUserDetails] = useState<UserResponse>(initUser);
-    const [showEdit, setShowEdit] = useState<boolean>(false);
     const navigate = useNavigate();
     /*TODO initial user details?*/
 
     useEffect(() => {
-        getUserDetails()
-            .then((userDetails) => setUserDetails(userDetails));
+        getUserDetails();
     }, []);
 
-    const getUserDetails = (): Promise<UserResponse> => {
+    const getUserDetails = (): Promise<UserResponse | void> => {
         return apiService.getSingleUser(loggedUser.id)
             .then(
                 (response: AxiosResponse<UserResponse>) => {
@@ -40,7 +37,11 @@ export default function User() {
                         return Promise.reject();
                     }
                 }
-            );
+            )
+            .then((userDetails: UserResponse) => {
+                setUserDetails(userDetails);
+            })
+            .catch((error) => console.error("An error has occurred:", error));
     }
 
     const deleteUser = () => {
@@ -54,10 +55,8 @@ export default function User() {
         )
     }
 
-
-    const refreshView = () => {
-        setShowEdit(false);
-        getUserDetails().then((userDetails) => setUserDetails(userDetails));
+    const openUserEdit = () => {
+        navigate(`/user/edit`);
     }
 
     return (
@@ -70,17 +69,9 @@ export default function User() {
                     <p><span className="fw-bold">Name:</span> {userDetails?.firstname}</p>
                     <p><span className="fw-bold">Surname:</span> {userDetails?.surname}</p>
                     <div className="d-flex flex-column">
-                        <Button type="button" className="w-50 mb-4" variant="info" onClick={() => setShowEdit(true)}>Edit details</Button>
+                        <Button type="button" className="w-50 mb-4" variant="info" onClick={openUserEdit}>Edit details</Button>
                         <Button type="button" className="w-50" variant="danger" onClick={deleteUser}>Delete account</Button>
                     </div>
-                </div>
-            </div>
-            <div className="d-flex justify-content-between">
-                <div className="w-50">
-
-                </div>
-                <div className="w-50">
-                    {showEdit && <EditProfile userDetails={userDetails} cancel={() => setShowEdit(false)} refreshView={refreshView}/>}
                 </div>
             </div>
         </div>

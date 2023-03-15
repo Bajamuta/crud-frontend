@@ -1,7 +1,8 @@
 import React from "react";
+import {useMainContext} from "../../App";
 import {Outlet} from "react-router-dom";
-import {useMainContext} from "../App";
-export default function ClientIndex() {
+
+export default function UserIndex() {
     const context = useMainContext();
     return (
         <div>

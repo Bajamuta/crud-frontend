@@ -1,38 +1,62 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Form} from "react-bootstrap";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {ClientRequest} from "../../helpers/interfaces-requests";
-import {AxiosResponse} from "axios";
-import {useMainContext} from "../App";
-import {useNavigate} from "react-router-dom";
+import {ClientRequest} from "../../../helpers/interfaces-requests";
+import {ClientResponse} from "../../../helpers/interfaces-responses";
+import {useNavigate, useParams} from "react-router-dom";
+import {useMainContext} from "../../App";
+import {AxiosResponse} from "axios/index";
 
-export default function AddClient() {
+export default function ClientEdit() {
     const navigate = useNavigate();
+    const {clientId} = useParams<string>();
+    const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const {apiService} = useMainContext();
     const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ClientRequest>();
-    const sendRequest = (data: ClientRequest) => {
-        apiService.createClient({...data})
-            .then((response: AxiosResponse<Response>) => {
-                if (response.status === 200) {
-                    navigate('clients');
-                }
-                else {
-                    console.log(response);
-                }
-            })
-            .catch((error) => console.error("An error has occurred:", error));
+
+    const getClientDetails = () => {
+        if (clientId)
+        {
+            apiService.getSingleClient(clientId)
+                .then((response: AxiosResponse<ClientResponse>) => {
+                    if (response.status === 200) {
+                        setSelectedClient(response.data);
+                    }
+                    else {
+                        console.log(response);
+                    }
+                })
+                .catch((error) => console.error("An error has occurred:", error));
+        }
     }
+
+    useEffect(() => {
+        getClientDetails();
+    }, []);
+
     const onSubmit: SubmitHandler<ClientRequest> = (data: ClientRequest) => {
-        sendRequest(data);
+        if (clientId)
+        {
+            apiService.updateClient(clientId, data)
+                .then(
+                    (response: AxiosResponse<ClientResponse>) => {
+                        if (response.status === 200)
+                        {
+                            navigate(`/clients/${clientId}/show`);
+                        }
+                    }
+                )
+                .catch((error) => console.error("An error has occurred:", error));
+        }
     }
 
     return (
         <div>
-            <h2 className="mb-4">Add new client</h2>
+            <h2 className="mb-4">Edit client's info: {}</h2>
             <Form name="newClientForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="" controlId="business">
                     <Form.Label>Is company*:</Form.Label>
-                    <Controller control={control} name="business" defaultValue={true}
+                    <Controller control={control} name="business" defaultValue={selectedClient?.business}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Check
                                         type="switch"
@@ -45,7 +69,7 @@ export default function AddClient() {
                 </Form.Group>
                 <Form.Group className="" controlId="firstname">
                     <Form.Label>First name*:</Form.Label>
-                    <Controller control={control} name="firstname"
+                    <Controller control={control} name="firstname" defaultValue={selectedClient?.firstname}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter first name"
                                                   required
@@ -60,7 +84,7 @@ export default function AddClient() {
                 </Form.Group>
                 <Form.Group className="" controlId="surname">
                     <Form.Label>Surname*:</Form.Label>
-                    <Controller control={control} name="surname" defaultValue=""
+                    <Controller control={control} name="surname" defaultValue={selectedClient?.surname}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter surname"
                                                   required
@@ -74,7 +98,7 @@ export default function AddClient() {
                 </Form.Group>
                 <Form.Group className="" controlId="email">
                     <Form.Label>Email*:</Form.Label>
-                    <Controller control={control} name="email" defaultValue=""
+                    <Controller control={control} name="email" defaultValue={selectedClient?.email}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="email" placeholder="Enter email"
                                                   required
@@ -88,7 +112,7 @@ export default function AddClient() {
                 </Form.Group>
                 <Form.Group className="" controlId="phone">
                     <Form.Label>Phone*:</Form.Label>
-                    <Controller control={control} name="phone" defaultValue=""
+                    <Controller control={control} name="phone" defaultValue={selectedClient?.phone}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter phone"
                                                   required
@@ -102,7 +126,7 @@ export default function AddClient() {
                 </Form.Group>
                 {watch().business && <Form.Group className="" controlId="nip">
                     <Form.Label>NIP*:</Form.Label>
-                    <Controller control={control} name="nip" defaultValue=""
+                    <Controller control={control} name="nip" defaultValue={selectedClient?.nip}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter NIP"
                                                   required
@@ -117,7 +141,7 @@ export default function AddClient() {
                 </Form.Group>}
                 {watch().business && <Form.Group className="" controlId="companyName">
                     <Form.Label>Company Name*:</Form.Label>
-                    <Controller control={control} name="companyName" defaultValue=""
+                    <Controller control={control} name="companyName" defaultValue={selectedClient?.companyName}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter company subject"
                                                   required
@@ -133,7 +157,7 @@ export default function AddClient() {
                 </Form.Group>}
                 <Form.Group className="" controlId="city">
                     <Form.Label>City*:</Form.Label>
-                    <Controller control={control} name="city" defaultValue=""
+                    <Controller control={control} name="city" defaultValue={selectedClient?.city}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter city"
                                                   required
@@ -147,7 +171,7 @@ export default function AddClient() {
                 </Form.Group>
                 <Form.Group className="" controlId="country">
                     <Form.Label>Country*:</Form.Label>
-                    <Controller control={control} name="country" defaultValue=""
+                    <Controller control={control} name="country" defaultValue={selectedClient?.country}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter country"
                                                   required
@@ -161,7 +185,7 @@ export default function AddClient() {
                 </Form.Group>
                 <Form.Group className="" controlId="postal">
                     <Form.Label>Postal*:</Form.Label>
-                    <Controller control={control} name="postal" defaultValue=""
+                    <Controller control={control} name="postal" defaultValue={selectedClient?.postal}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter postal"
                                                   required
@@ -175,7 +199,7 @@ export default function AddClient() {
                 </Form.Group>
                 <Form.Group className="" controlId="streetWithNumbers">
                     <Form.Label>Street with numbers*:</Form.Label>
-                    <Controller control={control} name="streetWithNumbers" defaultValue=""
+                    <Controller control={control} name="streetWithNumbers" defaultValue={selectedClient?.streetWithNumbers}
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter street with numbers"
                                                   required

@@ -2,21 +2,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Home from './views/Home';
+import Home from './views/elements/Home';
 import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Login from "./views/Login";
-import SignUp from "./views/SignUp";
-import LogOut from "./views/LogOut";
-import User from "./views/User";
-import ErrorPage from "./views/ErrorPage";
-import Clients from "./views/Clients";
-import Actions from "./views/Actions";
+import Login from "./views/user/Login";
+import SignUp from "./views/user/SignUp";
+import LogOut from "./views/user/LogOut";
+import User from "./views/user/User";
+import ErrorPage from "./views/elements/ErrorPage";
+import Clients from "./views/client/Clients";
+import Actions from "./views/action/Actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Registered from "./views/Registered";
-import ClientDetails from "./views/ClientDetails";
-import ClientIndex from "./views/ClientIndex";
-import AddClient from "./views/AddClient";
+import Registered from "./views/user/Registered";
+import ClientDetails from "./views/client/ClientDetails";
+import ClientIndex from "./views/client/ClientIndex";
+import ClientAdd from "./views/client/ClientAdd";
+import UserIndex from "./views/user/UserIndex";
+import UserEdit from "./views/user/UserEdit";
+import ClientEdit from "./views/client/ClientEdit";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -46,12 +49,16 @@ const router = createBrowserRouter([
                         element: <Clients/>, index: true
                     },
                     {
-                        path: ":clientId",
+                        path: ":clientId/show",
                         element: <ClientDetails/>
                     },
                     {
+                        path: ":clientId/edit",
+                        element: <ClientEdit/>
+                    },
+                    {
                         path: "add",
-                        element: <AddClient/>
+                        element: <ClientAdd/>
                     }
                 ]
             },
@@ -59,7 +66,16 @@ const router = createBrowserRouter([
                 path: "actions", element: <Actions/>
             },
             {
-                path: 'user', element: <User/>
+                path: 'user', element: <UserIndex/>,
+                children: [
+                    {
+                        element: <User/>, index: true
+                    },
+                    {
+                        path: "edit",
+                        element: <UserEdit/>
+                    }
+                ]
             },
             {
                 path: 'registered', element: <Registered/>
