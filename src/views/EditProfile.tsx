@@ -47,7 +47,7 @@ export default function EditProfile(props: EditProfileProps) {
     }
 
     return (
-        <div className="FormContainer BorderContainer mb-5">
+        <div className="FormContainer">
             <h2>Edit profile</h2>
             <Form name="signupForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="my-3" controlId="username">

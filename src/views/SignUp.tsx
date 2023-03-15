@@ -38,7 +38,7 @@ export default function SignUp() {
             && watch().password === watch().passwordConfirm;
     }
 
-    return (<div className="BorderContainer mb-5">
+    return (<div className="">
         <h2>Sign Up</h2>
         <Form name="signupForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
             <Form.Group className="" controlId="username">

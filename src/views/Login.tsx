@@ -52,19 +52,24 @@ export default function Login() {
         });
         setShowErrorMessage(false);
     }
-    return (<div className="BorderContainer mb-5">
-        <h2>Log In</h2>
+    return (<div className="LoginContainer">
+        <h2 className="mb-4">Log In</h2>
+        {/*HERE AS AN EXAMPLE WITHOUT BOOTSTRAP ELEMENTS, JUST CLASSES*/}
         <form className="FormBody" onSubmit={handleSubmit}>
-            <label form={formData.username} className="form-label">Username*:</label>
-            <input type="text"
-                   name="username"
-                   className="form-control"
-                   placeholder="Enter username"
-                   onChange={handleInputChange}/>
-            <label form={formData.password} className="form-label">Password*:</label>
-            <input type="password" placeholder="Enter password"
-                   className="form-control"
-                   name="password" onChange={handleInputChange}/>
+            <div>
+                <label form={formData.username} className="form-label">Username*:</label>
+                <input type="text"
+                       name="username"
+                       className="form-control"
+                       placeholder="Enter username"
+                       onChange={handleInputChange}/>
+            </div>
+            <div>
+                <label form={formData.password} className="form-label">Password*:</label>
+                <input type="password" placeholder="Enter password"
+                       className="form-control"
+                       name="password" onChange={handleInputChange}/>
+            </div>
             <button type="submit" className="btn btn-primary w-75 align-self-center mt-5">Login</button>
         </form>
         {showErrorMessage && <p className="FontItalic FontRed">{errorMessage}</p>}

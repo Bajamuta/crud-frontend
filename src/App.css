@@ -14,3 +14,8 @@
   display: flex;
   gap: 20px;
 }
+
+.FormContainer {
+    width: 600px;
+    margin: 0 auto;
+}
