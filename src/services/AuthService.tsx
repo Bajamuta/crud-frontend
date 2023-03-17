@@ -1,4 +1,4 @@
-import {FormDataLogin} from "../../helpers/interfaces";
+import {FormDataLogin} from "../helpers/interfaces";
 import {AUTH_TOKEN} from "../react-app-env.d";
 import axios from "axios";
 export default class AuthService {

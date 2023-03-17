@@ -6,7 +6,7 @@
 }
 
 .TableContainer {
-  width: 800px;
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -16,6 +16,6 @@
 }
 
 .FormContainer {
-    width: 600px;
+    width: 60%;
     margin: 0 auto;
 }

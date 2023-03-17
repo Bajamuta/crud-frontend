@@ -4,8 +4,8 @@ import {useNavigate} from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import {Button} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {FormDataRegister} from "../../../helpers/interfaces-requests";
-import {UserResponse} from "../../../helpers/interfaces-responses";
+import {FormDataRegister} from "../../helpers/interfaces-requests";
+import {UserResponse} from "../../helpers/interfaces-responses";
 import {useMainContext} from "../../App";
 
 export default function UserEdit() {

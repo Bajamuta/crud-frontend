@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ActionResponse} from "../../../helpers/interfaces-responses";
+import {ActionResponse} from "../../helpers/interfaces-responses";
 import {AxiosResponse} from "axios/index";
 import {Button} from "react-bootstrap";
 import Modal from "react-modal";
@@ -41,9 +41,9 @@ export default function Actions() {
     }, []);
     return (
         <div className="TableContainer">
-            <h3>Actions</h3>
-            <table>
-                <thead>
+            <h3 className="mb-4">Actions</h3>
+            <table className="table">
+                <thead className="table-light">
                 <tr>
                     <th scope="col">Lp.</th>
                     <th scope="col">Name</th>
@@ -52,7 +52,6 @@ export default function Actions() {
                     <th scope="col">Description</th>
                     <th scope="col"></th>
                 </tr>
-
                 </thead>
                 <tbody>
                 {
@@ -75,7 +74,7 @@ export default function Actions() {
                     )
                 }
                 </tbody>
-                <tfoot>
+                <tfoot className="table-light">
                 <tr>
                     <td colSpan={6}>Total: {actions?.length} action(s)</td>
                 </tr>

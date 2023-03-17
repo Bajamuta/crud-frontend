@@ -1,6 +1,6 @@
 import React from "react";
-import {Navigate} from "react-router-dom";
-import {LoginResponse} from "../../../helpers/interfaces-responses";
+import {LoginResponse} from "../../helpers/interfaces-responses";
+import {ProtectedRoute, NotLoggedRoute} from "../../helpers/helpers";
 import '../../styles/Navbar.css';
 import {Nav} from "react-bootstrap";
 
@@ -9,14 +9,6 @@ interface NavbarProps {
 }
 
 export default function Navbar(props: NavbarProps) {
-    const ProtectedRoute = ({ children } : { children: JSX.Element}) => {
-        const token = props.loggedUser?.jwt_token || null;
-        return token ? children : null;
-    };
-    const NotLoggedRoute = ({ children } : { children: JSX.Element}) => {
-        const token = props.loggedUser?.jwt_token || null;
-        return !token ? children : null;
-    };
 
     return (
         <nav className="navbar navbar-expand-lg" id="main-navbar">
@@ -26,7 +18,7 @@ export default function Navbar(props: NavbarProps) {
                         <Nav.Item>
                             <Nav.Link eventKey="1" href="/">Home</Nav.Link>
                         </Nav.Item>
-                        <ProtectedRoute>
+                        <ProtectedRoute loggedUser={props.loggedUser}>
                             <>
                                 <Nav.Item>
                                     <Nav.Link href="/user">User</Nav.Link>
@@ -56,7 +48,7 @@ export default function Navbar(props: NavbarProps) {
                                 </Nav.Item>
                         </>
                         </ProtectedRoute>
-                        <NotLoggedRoute>
+                        <NotLoggedRoute loggedUser={props.loggedUser}>
                             <>
                                 <Nav.Item>
                                     <Nav.Link eventKey="8" href="/login">Log in</Nav.Link>

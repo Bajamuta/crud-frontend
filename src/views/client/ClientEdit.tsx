@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Button, Form} from "react-bootstrap";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {ClientRequest} from "../../../helpers/interfaces-requests";
-import {ClientResponse} from "../../../helpers/interfaces-responses";
+import {ClientRequest} from "../../helpers/interfaces-requests";
+import {ClientResponse} from "../../helpers/interfaces-responses";
 import {useNavigate, useParams} from "react-router-dom";
 import {useMainContext} from "../../App";
 import {AxiosResponse} from "axios/index";

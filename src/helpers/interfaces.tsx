@@ -2,7 +2,7 @@ import {
     ActionResponse, ActionTypeResponse,
     AddressResponse, CityResponse,
     ClientBusinessResponse,
-    ClientPersonResponse, ClientResponse, CountryResponse,
+    ClientPersonResponse, ClientResponse, CountryResponse, LoginResponse,
     UserResponse
 } from "./interfaces-responses";
 
@@ -63,5 +63,10 @@ export interface FormDataLogin {
 
 export interface Error {
     message: string
+}
+
+export interface ProviderProps {
+    loggedUser: LoginResponse,
+    children: JSX.Element
 }
 

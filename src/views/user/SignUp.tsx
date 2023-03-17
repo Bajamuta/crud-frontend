@@ -4,8 +4,8 @@ import {SubmitHandler, useForm, Controller} from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import {Button} from "react-bootstrap";
 import {AxiosResponse} from "axios";
-import {UserResponse} from "../../../helpers/interfaces-responses";
-import { FormDataRegister } from "../../../helpers/interfaces-requests";
+import {UserResponse} from "../../helpers/interfaces-responses";
+import { FormDataRegister } from "../../helpers/interfaces-requests";
 import {useMainContext} from "../../App";
 
 export default function SignUp() {

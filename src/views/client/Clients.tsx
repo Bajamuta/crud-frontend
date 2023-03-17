@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {ClientResponse} from "../../../helpers/interfaces-responses";
+import {ClientResponse} from "../../helpers/interfaces-responses";
 import {AxiosResponse} from "axios";
 import {Button} from "react-bootstrap";
-import {ClientRequest} from "../../../helpers/interfaces-requests";
 import {useMainContext} from "../../App";
 import {useNavigate} from "react-router-dom";
 
@@ -37,12 +36,15 @@ export default function Clients() {
     const openClientDetails = (id: string) => {
         navigate(`/clients/${id}/show`);
     }
+    const addNewClient = () => {
+        navigate(`/clients/add`);
+    }
     useEffect(() => {
         getAllClients();
     }, []);
 
     return (
-        <div className="">
+        <div className="TableContainer">
             <h3 className="mb-4">Clients</h3>
             <table className="table">
                 <thead className="table-light">
@@ -54,7 +56,6 @@ export default function Clients() {
                     <th scope="col">Is company</th>
                     <th scope="col"></th>
                 </tr>
-
                 </thead>
                 <tbody>
                 {clients?.map(
@@ -85,8 +86,7 @@ export default function Clients() {
                 </tr>
                 </tfoot>
             </table>
-            {/*TODO przycisk dodaj klienta*/}
-{/*            <ClientAdd refresh={refreshClientsList} createClient={createClient}/>*/}
+            <Button type="button" variant="primary" onClick={addNewClient}>Add new client</Button>
         </div>
     );
 }

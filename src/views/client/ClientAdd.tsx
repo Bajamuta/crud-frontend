@@ -1,7 +1,7 @@
 import React from "react";
 import {Button, Form} from "react-bootstrap";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {ClientRequest} from "../../../helpers/interfaces-requests";
+import {ClientRequest} from "../../helpers/interfaces-requests";
 import {AxiosResponse} from "axios";
 import {useMainContext} from "../../App";
 import {useNavigate} from "react-router-dom";

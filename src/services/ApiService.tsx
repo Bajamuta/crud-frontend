@@ -43,14 +43,14 @@ import {
     ClientRequest,
     CountryRequest,
     UserRequest
-} from "../../helpers/interfaces-requests";
+} from "../helpers/interfaces-requests";
 import {
     ActionResponse, ActionTypeResponse, AddressResponse,
     CityResponse,
     CitySizeResponse, ClientBusinessResponse, ClientPersonResponse,
     ClientResponse,
     CountryResponse, UserResponse
-} from "../../helpers/interfaces-responses";
+} from "../helpers/interfaces-responses";
 
 export default class ApiService {
 

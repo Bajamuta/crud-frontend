@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {ActionTypeResponse, LoginResponse} from "../helpers/interfaces-responses";
+import {ActionTypeResponse, LoginResponse} from "./helpers/interfaces-responses";
 import Header from "./views/elements/Header";
 import {Outlet, useOutletContext} from "react-router-dom";
 import Footer from "./views/elements/Footer";
@@ -46,7 +46,7 @@ export default function App() {
         getAllActionTypes();
     }, []);
 
-/*TODO authprovider + sprawdź ważność tokenu "time to leave"*/
+/*TODO sprawdź ważność tokenu "time to leave"*/
 return (
     <div className="container-fluid" id="appElement">
         <div className="row">
