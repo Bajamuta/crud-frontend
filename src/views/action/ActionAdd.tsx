@@ -21,6 +21,7 @@ export default function ActionAdd(props: ActionAddProps) {
             .then(
                 (response: AxiosResponse<Response>) => {
                     setShowAddAction(false);
+                    props.refresh();
                 }
             )
             .catch((error) => console.error("An error has occurred:", error));
@@ -28,7 +29,7 @@ export default function ActionAdd(props: ActionAddProps) {
     return (
         <div className="FormContainer">
             <Button type="button" variant="info" onClick={() => setShowAddAction(true)} className="my-3">Add action</Button>
-            <div className="p-4 border-3 border shadow">
+            {showAddAction && <div className="p-4 border-3 border shadow">
 
                 <h5>New action for {props.selectedClient?.firstname} {props.selectedClient?.surname}</h5>
                 <Form name="newActionForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
@@ -39,9 +40,10 @@ export default function ActionAdd(props: ActionAddProps) {
                                         <Form.Control type="text" placeholder="Token"
                                                       required
                                                       disabled
-                                                      onChange={onChange} value={value} ref={ref} isInvalid={!!errors.token}>
+                                                      onChange={onChange} value={value} ref={ref}
+                                                      isInvalid={!!errors.token}>
                                         </Form.Control>
-                                    )} />
+                                    )}/>
                         <Form.Control.Feedback type='invalid'>
                             {errors.token?.message}
                         </Form.Control.Feedback>
@@ -54,13 +56,15 @@ export default function ActionAdd(props: ActionAddProps) {
                                         <Form.Control type="text" placeholder="ClientId"
                                                       required
                                                       disabled
-                                                      onChange={onChange} value={value} ref={ref} isInvalid={!!errors.clientId}>
+                                                      onChange={onChange} value={value} ref={ref}
+                                                      isInvalid={!!errors.clientId}>
                                         </Form.Control>
-                                    )} />
+                                    )}/>
                         <Form.Control.Feedback type='invalid'>
                             {errors.clientId?.message}
                         </Form.Control.Feedback>
-                        {errors.clientId && <Form.Text className="ValidationMessage">{errors.clientId?.message}</Form.Text>}
+                        {errors.clientId &&
+                            <Form.Text className="ValidationMessage">{errors.clientId?.message}</Form.Text>}
                     </Form.Group>
                     <Form.Group className="" controlId="typeId">
                         <Form.Label>Type of action*:</Form.Label>
@@ -77,7 +81,7 @@ export default function ActionAdd(props: ActionAddProps) {
                                                             name="actionType"
                                                             onChange={onChange} ref={ref} isInvalid={!!errors.typeId}
                                                         />
-                                                    )} />
+                                                    )}/>
                                     );
                                 }
                             )
@@ -93,13 +97,15 @@ export default function ActionAdd(props: ActionAddProps) {
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="text" placeholder="Enter subject"
                                                       required
-                                                      onChange={onChange} value={value} ref={ref} isInvalid={!!errors.subject}>
+                                                      onChange={onChange} value={value} ref={ref}
+                                                      isInvalid={!!errors.subject}>
                                         </Form.Control>
-                                    )} />
+                                    )}/>
                         <Form.Control.Feedback type='invalid'>
                             {errors.subject?.message}
                         </Form.Control.Feedback>
-                        {errors.subject && <Form.Text className="ValidationMessage">{errors.subject?.message}</Form.Text>}
+                        {errors.subject &&
+                            <Form.Text className="ValidationMessage">{errors.subject?.message}</Form.Text>}
                     </Form.Group>
                     <Form.Group className="" controlId="date">
                         <Form.Label>Date*:</Form.Label>
@@ -107,9 +113,10 @@ export default function ActionAdd(props: ActionAddProps) {
                                     render={({field: {onChange, onBlur, value, ref}}) => (
                                         <Form.Control type="date" placeholder="Pick date"
                                                       required
-                                                      onChange={onChange} value={value} ref={ref} isInvalid={!!errors.date}>
+                                                      onChange={onChange} value={value} ref={ref}
+                                                      isInvalid={!!errors.date}>
                                         </Form.Control>
-                                    )} />
+                                    )}/>
                         <Form.Control.Feedback type='invalid'>
                             {errors.date?.message}
                         </Form.Control.Feedback>
@@ -122,20 +129,23 @@ export default function ActionAdd(props: ActionAddProps) {
                                         <Form.Control type="text" placeholder="Enter description"
                                                       as="textarea" rows={3}
                                                       required
-                                                      onChange={onChange} value={value} ref={ref} isInvalid={!!errors.description}>
+                                                      onChange={onChange} value={value} ref={ref}
+                                                      isInvalid={!!errors.description}>
                                         </Form.Control>
-                                    )} />
+                                    )}/>
                         <Form.Control.Feedback type='invalid'>
                             {errors.description?.message}
                         </Form.Control.Feedback>
-                        {errors.description && <Form.Text className="ValidationMessage">{errors.description?.message}</Form.Text>}
+                        {errors.description &&
+                            <Form.Text className="ValidationMessage">{errors.description?.message}</Form.Text>}
                     </Form.Group>
                     <div className="ButtonsContainer">
-                        <Button variant="outline-danger" size="lg" type="reset" onClick={() => setShowAddAction(false)}>Cancel</Button>
+                        <Button variant="outline-danger" size="lg" type="reset"
+                                onClick={() => setShowAddAction(false)}>Cancel</Button>
                         <Button variant="primary" size="lg" type="submit">Save</Button>
                     </div>
                 </Form>
-            </div>
+            </div>}
         </div>
     );
 }

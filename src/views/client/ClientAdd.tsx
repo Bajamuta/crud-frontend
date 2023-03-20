@@ -14,7 +14,7 @@ export default function ClientAdd() {
         apiService.createClient({...data})
             .then((response: AxiosResponse<Response>) => {
                 if (response.status === 200) {
-                    navigate('clients');
+                    navigate('/clients');
                 }
                 else {
                     console.log(response);
@@ -32,7 +32,7 @@ export default function ClientAdd() {
             <Form name="newClientForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="" controlId="business">
                     <Form.Label>Is company*:</Form.Label>
-                    <Controller control={control} name="business" defaultValue={true}
+                    <Controller control={control} name="business"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Check
                                         type="switch"
@@ -49,7 +49,6 @@ export default function ClientAdd() {
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter first name"
                                                   required
-                                                  defaultValue=""
                                                   onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>
                                     </Form.Control>
                                 )} />
@@ -60,7 +59,7 @@ export default function ClientAdd() {
                 </Form.Group>
                 <Form.Group className="" controlId="surname">
                     <Form.Label>Surname*:</Form.Label>
-                    <Controller control={control} name="surname" defaultValue=""
+                    <Controller control={control} name="surname"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter surname"
                                                   required
@@ -74,7 +73,7 @@ export default function ClientAdd() {
                 </Form.Group>
                 <Form.Group className="" controlId="email">
                     <Form.Label>Email*:</Form.Label>
-                    <Controller control={control} name="email" defaultValue=""
+                    <Controller control={control} name="email"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="email" placeholder="Enter email"
                                                   required
@@ -88,7 +87,7 @@ export default function ClientAdd() {
                 </Form.Group>
                 <Form.Group className="" controlId="phone">
                     <Form.Label>Phone*:</Form.Label>
-                    <Controller control={control} name="phone" defaultValue=""
+                    <Controller control={control} name="phone"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter phone"
                                                   required
@@ -102,7 +101,7 @@ export default function ClientAdd() {
                 </Form.Group>
                 {watch().business && <Form.Group className="" controlId="nip">
                     <Form.Label>NIP*:</Form.Label>
-                    <Controller control={control} name="nip" defaultValue=""
+                    <Controller control={control} name="nip"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter NIP"
                                                   required
@@ -117,7 +116,7 @@ export default function ClientAdd() {
                 </Form.Group>}
                 {watch().business && <Form.Group className="" controlId="companyName">
                     <Form.Label>Company Name*:</Form.Label>
-                    <Controller control={control} name="companyName" defaultValue=""
+                    <Controller control={control} name="companyName"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter company subject"
                                                   required
@@ -133,7 +132,7 @@ export default function ClientAdd() {
                 </Form.Group>}
                 <Form.Group className="" controlId="city">
                     <Form.Label>City*:</Form.Label>
-                    <Controller control={control} name="city" defaultValue=""
+                    <Controller control={control} name="city"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter city"
                                                   required
@@ -147,7 +146,7 @@ export default function ClientAdd() {
                 </Form.Group>
                 <Form.Group className="" controlId="country">
                     <Form.Label>Country*:</Form.Label>
-                    <Controller control={control} name="country" defaultValue=""
+                    <Controller control={control} name="country"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter country"
                                                   required
@@ -161,7 +160,7 @@ export default function ClientAdd() {
                 </Form.Group>
                 <Form.Group className="" controlId="postal">
                     <Form.Label>Postal*:</Form.Label>
-                    <Controller control={control} name="postal" defaultValue=""
+                    <Controller control={control} name="postal"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter postal"
                                                   required
@@ -175,7 +174,7 @@ export default function ClientAdd() {
                 </Form.Group>
                 <Form.Group className="" controlId="streetWithNumbers">
                     <Form.Label>Street with numbers*:</Form.Label>
-                    <Controller control={control} name="streetWithNumbers" defaultValue=""
+                    <Controller control={control} name="streetWithNumbers"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter street with numbers"
                                                   required

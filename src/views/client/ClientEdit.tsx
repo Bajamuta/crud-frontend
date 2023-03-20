@@ -12,7 +12,7 @@ export default function ClientEdit() {
     const {clientId} = useParams<string>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const {apiService} = useMainContext();
-    const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ClientRequest>();
+    const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ClientRequest>({defaultValues: selectedClient || {}});
 
     const getClientDetails = () => {
         if (clientId)
@@ -56,7 +56,7 @@ export default function ClientEdit() {
             <Form name="newClientForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="" controlId="business">
                     <Form.Label>Is company*:</Form.Label>
-                    <Controller control={control} name="business" defaultValue={selectedClient?.business}
+                    <Controller control={control} name="business"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Check
                                         type="switch"
@@ -69,7 +69,7 @@ export default function ClientEdit() {
                 </Form.Group>
                 <Form.Group className="" controlId="firstname">
                     <Form.Label>First name*:</Form.Label>
-                    <Controller control={control} name="firstname" defaultValue={selectedClient?.firstname}
+                    <Controller control={control} name="firstname"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter first name"
                                                   required
@@ -84,13 +84,13 @@ export default function ClientEdit() {
                 </Form.Group>
                 <Form.Group className="" controlId="surname">
                     <Form.Label>Surname*:</Form.Label>
-                    <Controller control={control} name="surname" defaultValue={selectedClient?.surname}
+                    <Controller control={control} name="surname"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter surname"
                                                   required
                                                   onChange={onChange} value={value} ref={ref} isInvalid={!!errors.surname}>
                                     </Form.Control>
-                                )} />
+                                )} />defaultValue={selectedClient?.phone}
                     <Form.Control.Feedback type='invalid'>
                         {errors.surname?.message}
                     </Form.Control.Feedback>
@@ -98,7 +98,7 @@ export default function ClientEdit() {
                 </Form.Group>
                 <Form.Group className="" controlId="email">
                     <Form.Label>Email*:</Form.Label>
-                    <Controller control={control} name="email" defaultValue={selectedClient?.email}
+                    <Controller control={control} name="email"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="email" placeholder="Enter email"
                                                   required
@@ -112,7 +112,7 @@ export default function ClientEdit() {
                 </Form.Group>
                 <Form.Group className="" controlId="phone">
                     <Form.Label>Phone*:</Form.Label>
-                    <Controller control={control} name="phone" defaultValue={selectedClient?.phone}
+                    <Controller control={control} name="phone"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
                                     <Form.Control type="text" placeholder="Enter phone"
                                                   required
