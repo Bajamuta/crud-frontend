@@ -3,7 +3,7 @@ import '../../styles/Login.css';
 import {AxiosResponse} from "axios";
 import {useNavigate} from "react-router-dom";
 import {FormDataLogin} from "../../helpers/interfaces";
-import {LoginResponse} from "../../helpers/interfaces-responses";
+import {LoginResponse, UserResponse} from "../../helpers/interfaces-responses";
 import {useMainContext} from "../../App";
 
 export default function Login() {
@@ -32,11 +32,12 @@ export default function Login() {
                 else
                 {
                     console.error('An error has occurred during retrieving login token', response.data.error);
-                    // setErrorMessage(response.data.error)
+                    setErrorMessage('An error has occurred during retrieving login token');
                     setShowErrorMessage(true);
                 }
             }
             else {
+                setErrorMessage("Incorrect username or password");
                 setShowErrorMessage(true);
             }
         })

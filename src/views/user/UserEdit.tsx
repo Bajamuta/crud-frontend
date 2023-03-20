@@ -9,43 +9,11 @@ import {UserResponse} from "../../helpers/interfaces-responses";
 import {useMainContext} from "../../App";
 
 export default function UserEdit() {
-    const initUser = {
-        _id: '',
-        createdAt: '',
-        firstname: '',
-        surname: '',
-        username: '',
-        email: '',
-        avatarUrl: '',
-        actions: []
-    };
-    const {loggedUser, apiService} = useMainContext();
-    const [userDetails, setUserDetails] = useState<UserResponse>(initUser);
+    const {userDetails, apiService} = useMainContext();
     const defaultAvatarUrl = 'https://images.unsplash.com/photo-1622227056993-6e7f88420855?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80';
-    const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<FormDataRegister>();
+    const { register, handleSubmit, control, reset, watch, formState: { errors } } =
+        useForm<FormDataRegister>({defaultValues: {username: userDetails?.username}});
     const navigate = useNavigate();
-
-    useEffect(() => {
-        getUserDetails();
-    }, []);
-
-    const getUserDetails = (): Promise<UserResponse | void> => {
-        return apiService.getSingleUser(loggedUser.id)
-            .then(
-                (response: AxiosResponse<UserResponse>) => {
-                    if (!response.data.error) {
-                        return Promise.resolve(response.data);
-                    } else {
-                        console.error('An error has occurred during retrieving logged user\'s details', response.data.error);
-                        return Promise.reject();
-                    }
-                }
-            )
-            .then((userDetails: UserResponse) => {
-                setUserDetails(userDetails);
-            })
-            .catch((error) => console.error("An error has occurred:", error));
-    }
 
     const onSubmit: SubmitHandler<FormDataRegister> = (data: FormDataRegister) => {
         apiService.updateUser(userDetails._id, data)
@@ -54,7 +22,6 @@ export default function UserEdit() {
                     if (!response.data.error)
                     {
                         navigate('/user');
-                        /*TODO poprawić grafikę*/
                     }
                     else
                     {
@@ -74,14 +41,18 @@ export default function UserEdit() {
             && watch().password === watch().passwordConfirm;
     }
 
+    console.log('s', userDetails.username);
+
     return (
         <div className="FormContainer">
             <h2 className="mb-4">Edit user info:</h2>
             <Form name="signupForm" className="FormBody" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="my-3" controlId="username">
                     <Form.Label>Username*:</Form.Label>
-                    <Controller control={control} name="username" defaultValue={userDetails?.username}
-                                render={({field: {onChange, onBlur, value, ref}}) => (
+                    <Controller control={control} name="username"
+                                render={({field: {onChange, onBlur, value, ref},
+                                             fieldState: { invalid, isTouched, isDirty, error },
+                                             formState}) => (
                                     <Form.Control type="text" placeholder="Enter username"
                                                   required
                                                   minLength={3}
@@ -95,10 +66,11 @@ export default function UserEdit() {
                 </Form.Group>
                 <Form.Group className="my-3" controlId="firstname">
                     <Form.Label>Name*:</Form.Label>
-                    <Controller control={control} name="firstname" defaultValue={userDetails?.firstname}
+                    <Controller control={control} name="firstname"
                                 render={({field: {onChange, onBlur, value, ref}}) => (
-                                    <Form.Control type="text" placeholder="Enter subject"
+                                    <Form.Control type="text" placeholder="Enter first name"
                                                   required
+                                                  defaultValue={userDetails?.firstname}
                                                   minLength={3}
                                                   onChange={onChange} value={value} ref={ref} isInvalid={!!errors.firstname}>
                                     </Form.Control>

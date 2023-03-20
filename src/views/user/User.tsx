@@ -2,46 +2,14 @@ import React, {useEffect, useState} from "react";
 import {useNavigate,} from "react-router-dom";
 import {AxiosResponse} from "axios";
 import {Button, Image} from "react-bootstrap";
-import {UserResponse} from "../../helpers/interfaces-responses";
 import {useMainContext} from "../../App";
 
 export default function User() {
-    const initUser = {
-        _id: '',
-        createdAt: '',
-        firstname: '',
-        surname: '',
-        username: '',
-        email: '',
-        avatarUrl: '',
-        actions: []
-    };
-    const {loggedUser, apiService} = useMainContext();
+    const {loggedUser, apiService, userDetails} = useMainContext();
     const defaultAvatarUrl = 'https://images.unsplash.com/photo-1622227056993-6e7f88420855?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80';
-    const [userDetails, setUserDetails] = useState<UserResponse>(initUser);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        getUserDetails();
-    }, []);
-
-    const getUserDetails = (): Promise<UserResponse | void> => {
-        return apiService.getSingleUser(loggedUser.id)
-            .then(
-                (response: AxiosResponse<UserResponse>) => {
-                    if (!response.data.error) {
-                        return Promise.resolve(response.data);
-                    } else {
-                        console.error('An error has occurred during retrieving logged user\'s details', response.data.error);
-                        return Promise.reject();
-                    }
-                }
-            )
-            .then((userDetails: UserResponse) => {
-                setUserDetails(userDetails);
-            })
-            .catch((error) => console.error("An error has occurred:", error));
-    }
+    console.log('s', userDetails);
 
     const deleteUser = () => {
         return apiService.deleteUser(loggedUser.id).then(
