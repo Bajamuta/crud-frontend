@@ -12,7 +12,12 @@ export default function ClientEdit() {
     const {clientId} = useParams<string>();
     const [selectedClient, setSelectedClient] = useState<ClientResponse | null>(null);
     const {apiService} = useMainContext();
-    const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ClientRequest>({defaultValues: selectedClient || {}});
+    const { register, handleSubmit, control, reset, watch, formState: { errors } } = useForm<ClientRequest>({defaultValues: selectedClient || {}, resetOptions: {
+            keepDirtyValues: true, // user-interacted input will be retained
+            keepErrors: true, // input errors will be retained with value update
+        }});
+
+    /*TODO prosty hosting expressjs z handlebarsem z prostym endpointem; jak robić deploy?*/
 
     const getClientDetails = () => {
         if (clientId)
@@ -29,7 +34,7 @@ export default function ClientEdit() {
                 .catch((error) => console.error("An error has occurred:", error));
         }
     }
-
+console.log('sel', selectedClient);
     useEffect(() => {
         getClientDetails();
     }, []);
