@@ -1,5 +1,14 @@
 /// <reference types="react-scripts" />
-export const API_URL = "http://localhost:8080/api";
+
+// export const BASE_URL: "http://localhost:8080";
+export const BASE_URL = "https://test108.herokuapp.com";
+export const API_URL = `${BASE_URL}/api`;
+
+
+/*
+* AUTH
+* */
+export const AUTH_TOKEN = `${BASE_URL}/auth/login`;
 
 /*
 * USERS
@@ -91,8 +100,3 @@ export const API_ACTION_TYPES_CREATE = `${API_ACTION_TYPES_URL}/add`;
 export const API_ACTION_TYPES_UPDATE = `${API_ACTION_TYPES_URL}/update`;
 export const API_ACTION_TYPES_DELETE = `${API_ACTION_TYPES_URL}/delete`;
 
-
-/*
-* AUTH
-* */
-export const AUTH_TOKEN = `http://localhost:8080/auth/login`;

@@ -16,9 +16,6 @@ export default function ClientEdit() {
             keepDirtyValues: true, // user-interacted input will be retained
             keepErrors: true, // input errors will be retained with value update
         }});
-
-    /*TODO prosty hosting expressjs z handlebarsem z prostym endpointem; jak robić deploy?*/
-
     const getClientDetails = () => {
         if (clientId)
         {
