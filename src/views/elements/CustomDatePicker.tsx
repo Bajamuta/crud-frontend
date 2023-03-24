@@ -9,7 +9,7 @@ export default function CustomDatePicker(props: Props) {
     return (
         <DatePicker
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={(date: Date) => setStartDate(date)}
         />
     );
 }
