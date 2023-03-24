@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Home from './views/elements/Home';
 import reportWebVitals from './reportWebVitals';
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, createHashRouter, RouterProvider} from "react-router-dom";
 import Login from "./views/user/Login";
 import SignUp from "./views/user/SignUp";
 import LogOut from "./views/user/LogOut";
@@ -24,8 +24,7 @@ import ClientEdit from "./views/client/ClientEdit";
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
         path: "/*",
         element: <App/>,
