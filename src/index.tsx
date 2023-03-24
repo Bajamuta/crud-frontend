@@ -24,9 +24,9 @@ import ClientEdit from "./views/client/ClientEdit";
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-const router = createHashRouter([
+const router = createBrowserRouter([
     {
-        path: "/*",
+        path: "",
         element: <App/>,
         children: [
             {
